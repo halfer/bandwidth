@@ -1,0 +1,50 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/10-Routing
+
+download:
+  url:   /download/:filename
+  param: { module: download, action: index }
+  requirements: { filename: .+ }
+  
+index:
+  url:    /settings
+  param:  { module: settings, action: index }
+
+add_new:
+  url:    /settings/add-new
+  param:  { module: settings, action: add }
+
+groups:
+  url:    /settings/groups
+  param:  { module: settings, action: groups }
+
+files:
+  url:    /settings/files
+  param:  { module: settings, action: files }
+
+group:
+  url:    /settings/group/:groupId
+  param:  { module: settings, action: group }
+
+group_save:
+  url:    /settings/group-save/:groupId
+  param:  { module: settings, action: groupSave }
+  
+file:
+  url:    /settings/file/:fileId
+  param:  { module: settings, action: file }
+  requirements: { fileId: \d+ }
+
+# default rules
+homepage:
+  url:    /
+  param:  { module: default, action: index }
+
+# generic rules
+# please, remove them by adding more specific rules
+default_index:
+  url:    /:module
+  param:  { action: index }
+
+default:
+  url:    /:module/:action/*

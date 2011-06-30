@@ -1,0 +1,61 @@
+propel:
+  _attributes:
+    package: lib.model
+    defaultIdMethod: native
+  download_file:
+    _attributes: { phpName: DownloadFile }
+    id: { phpName: Id, type: INTEGER, primaryKey: true, autoIncrement: true, required: true }
+    name: { phpName: Name, type: VARCHAR, size: '255', required: true }
+    path: { phpName: Path, type: VARCHAR, size: '255', required: true }
+    original_uri: { phpName: OriginalUri, type: VARCHAR, size: '512', required: false }
+    created_at: { phpName: CreatedAt, type: TIMESTAMP, required: true }
+    checked_at: { phpName: CheckedAt, type: TIMESTAMP, required: false }
+    size: { phpName: Size, type: INTEGER, required: false }
+    is_enabled: { phpName: IsEnabled, type: BOOLEAN, required: true, default: true }
+  download_group:
+    _attributes: { phpName: DownloadGroup }
+    id: { phpName: Id, type: INTEGER, primaryKey: true, autoIncrement: true, required: true }
+    name: { phpName: Name, type: VARCHAR, size: '64', required: false }
+    rate_limit: { phpName: RateLimit, type: INTEGER, required: false }
+    count_limit: { phpName: CountLimit, type: INTEGER, required: false }
+    bandwidth_limit: { type: INTEGER, required: false }
+    concurrent_limit: { type: INTEGER, required: false }
+    concurrent_limit_per_ip: { type: INTEGER, required: false }
+#    daily_limit: { phpName: DailyLimit, type: INTEGER, required: false }
+#    daily_limit_per_ip: { phpName: DailyLimitPerIp, type: INTEGER, required: false }
+#    day_starts_at: { phpName: DayStartsAt, type: INTEGER, required: false }
+#    weekly_limit: { phpName: WeeklyLimit, type: INTEGER, required: false }
+#    weekly_limit_per_ip: { phpName: WeeklyLimitPerIp, type: INTEGER, required: false }
+#    week_starts_at: { phpName: WeekStartsAt, type: INTEGER, required: false }
+#    monthly_limit: { phpName: MonthlyLimit, type: INTEGER, required: false }
+#    monthly_limit_per_ip: { phpName: MonthlyLimitPerIp, type: INTEGER, required: false }
+#    month_starts_at: { phpName: MonthStartsAt, type: INTEGER, required: false }
+    valid_from: { phpName: ValidFrom, type: DATE, required: false }
+    valid_to: { phpName: ValidTo, type: DATE, required: false }
+    is_use_landing: { phpName: IsUseLanding, type: BOOLEAN, required: false }
+    is_use_captcha: { phpName: IsUseCaptcha, type: BOOLEAN, required: false }
+    system_group_type: { phpName: SystemGroupType, type: INTEGER, required: false }
+    is_enabled: { phpName: IsEnabled, type: BOOLEAN, required: true, default: true }
+  file_group:
+    download_file_id: { phpName: DownloadFileId, type: INTEGER, primaryKey: true, required: true, foreignTable: download_file, foreignReference: id }
+    download_group_id: { phpName: DownloadGroupId, type: INTEGER, primaryKey: true, required: true, foreignTable: download_group, foreignReference: id }
+  download_log:
+    _attributes: { phpName: DownloadLog }
+    id: { phpName: Id, type: INTEGER, primaryKey: true, autoIncrement: true, required: true }
+    download_file_id: { phpName: DownloadFileId, type: INTEGER, required: true, foreignTable: download_file, foreignReference: id }
+    started_at: { phpName: StartedAt, type: TIMESTAMP, required: true }
+    last_accessed_at: { phpName: AccessedAt, type: TIMESTAMP }
+    ip: { phpName: Ip, type: VARCHAR, size: '17', required: true }
+    byte_count: { phpName: ByteCount, type: INTEGER, required: true }
+    is_aborted: { phpName: IsAborted, type: BOOLEAN, required: true, default: false }
+  upload_queue:
+    _attributes: { phpName: UploadQueue }
+    id: { phpName: Id, type: INTEGER, primaryKey: true, autoIncrement: true, required: true }
+    owner_id: { phpName: OwnerId, type: INTEGER, required: true, foreignTable: sf_guard_user, foreignReference: id }
+    file_id: { phpName: FileId, type: INTEGER, required: false, foreignTable: download_file, foreignReference: id }
+    url: { phpName: Url, type: VARCHAR, size: '512', required: true }
+    path: { phpName: Path, type: VARCHAR, size: '255', required: true }
+    created_at: { phpName: CreatedAt, type: DATE, required: true }
+    processed_at: { phpName: ProcessedAt, type: DATE, required: false }
+    status: { phpName: Status, type: INTEGER, required: false }
+    report: { phpName: Report, type: VARCHAR, size: '512', required: false }

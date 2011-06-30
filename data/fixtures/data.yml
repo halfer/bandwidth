@@ -1,0 +1,37 @@
+DownloadGroup:
+  default_file:
+    name:              'File defaults'
+    system_group_type: <?php echo DownloadGroupPeer::TYPE_FILE_DEFAULT . "\n" ?>
+  default_group:
+    name:              'Group defaults'
+    system_group_type: <?php echo DownloadGroupPeer::TYPE_GROUP_DEFAULT . "\n" ?>
+  rate_limited:
+    name:              Rate limited demo
+    rate_limit:        <?php echo 100*1024 . "\n" ?>
+    count_limit:       10
+  bandwidth_limited:
+    name:              Bandwidth limited demo
+    bandwidth_limit:   1000000
+  concurrency_limited:
+    name:              Concurrency limited demo
+    concurrent_limit:  5
+    concurrent_limit_per_ip: 1
+
+DownloadFile:
+  cat:
+    name:              miaowler.jpg
+    path:              subfolder
+  music:
+    name:              2-many-djs-part-1.mp3
+    path:              ''
+
+FileGroup:
+  link1:
+    download_file_id:     music
+    download_group_id:    rate_limited
+  link2:
+    download_file_id:     music
+    download_group_id:    concurrency_limited
+  link3:
+    download_file_id:     cat
+    download_group_id:    bandwidth_limited

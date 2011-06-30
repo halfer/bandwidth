@@ -1,0 +1,3 @@
+# @todo This was the place for it in symfony 1.0 - may have changed though
+all:
+  default_culture:     en_GB
