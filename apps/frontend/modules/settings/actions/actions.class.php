@@ -101,12 +101,7 @@ class settingsActions extends sfActions
 			$this->downloadGroup->fromArray($params, BasePeer::TYPE_FIELDNAME);
 			$this->downloadGroup->save();
 			
-//			print_r($this->downloadGroup->toArray());
-//			echo "<hr/>";
-//			print_r($this->downloadGroup->getValidationFailures());
-//			exit();
-			
-			$groupId = 1;
+			$groupId = $request->getParameter('groupId');
 			$this->redirect('@group?groupId=' . $groupId);
 		}		
 	}
