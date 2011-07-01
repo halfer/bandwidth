@@ -97,9 +97,17 @@ class DownloadFile extends BaseDownloadFile
 		$stmt = DownloadFilePeer::doSelectStmt($c);
 		
 		$isPermit = true;
-		while ($row = $stmt->fetch(PDO::FETCH_ASSOC) && $isPermit)
+		while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) && $isPermit)
 		{
 			$isPermit = ($row['bandwidth_usage'] < $row['bandwidth_limit']);
+
+			// @todo This needs to be turned off for the live environment
+			if (!$isPermit)
+			{
+				$message = 'Exceeded bandwidth limit imposed by group #' . $row['id'] .
+					' (used ' . $row['bandwidth_usage'] . ', limit ' . $row['bandwidth_limit'] . ')';
+				sfContext::getInstance()->getLogger()->warning($message);
+			}
 		}
 		
 		return $isPermit;
@@ -128,12 +136,20 @@ class DownloadFile extends BaseDownloadFile
 			add(DownloadGroupPeer::COUNT_LIMIT, null, Criteria::ISNOTNULL)->
 			addGroupByColumn(DownloadGroupPeer::ID)->
 			addGroupByColumn(DownloadGroupPeer::COUNT_LIMIT);
-		$stmt = DownloadFilePeer::doSelectStmt($c);
-		
+		$stmt = DownloadGroupPeer::doSelectStmt($c);
+
 		$isPermit = true;
-		while ($row = $stmt->fetch(PDO::FETCH_ASSOC) && $isPermit)
+		while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) && $isPermit)
 		{
 			$isPermit = ($row['count_usage'] < $row['count_limit']);
+
+			// @todo This needs to be turned off for the live environment
+			if (!$isPermit)
+			{
+				$message = 'Exceeded count limit imposed by group #' . $row['id'] .
+					' (used ' . $row['count_usage'] . ', limit ' . $row['count_limit'] . ')';
+				sfContext::getInstance()->getLogger()->warning($message);
+			}
 		}
 		
 		return $isPermit;
@@ -176,12 +192,28 @@ class DownloadFile extends BaseDownloadFile
 		$isPermit = true;
 		while ($row = $stmt->fetch(PDO::FETCH_ASSOC) && $isPermit)
 		{
-			$isPermit = (
-				($row['count_concurrent'] <= $row['concurrent_limit']) &&
-				($row['count_concurrent_by_ip'] <= $row['concurrent_limit_by_ip'])
-			);
-echo "<pre>" . print_r($row, true) . "</pre>";
-exit();
+			$isPermitAny = ($row['count_concurrent'] <= $row['concurrent_limit']);
+			$isPermitIP = ($row['count_concurrent_by_ip'] <= $row['concurrent_limit_by_ip']);
+			$isPermit = $isPermitAny || $isPermitIP;
+
+			// @todo This needs to be turned off for the live environment
+			if (!$isPermit)
+			{
+				if ($isPermitAny)
+				{
+					$message = 'Exceeded concurrency limit imposed by group #' . $row['id'] .
+						' (used ' . $row['count_concurrent'] . ', limit ' .
+						$row['concurrent_limit'] . ')';
+				}
+				else
+				{
+					$message = 'Exceeded concurrency limit by IP imposed by group #' . $row['id'] .
+						' (used ' . $row['count_concurrent_by_ip'] . ', limit ' .
+						$row['concurrent_limit_by_ip'] . ')';
+				}
+				sfContext::getInstance()->getLogger()->warning($message);
+			}
+
 		}
 		
 		return $isPermit;
