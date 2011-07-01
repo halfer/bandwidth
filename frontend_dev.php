@@ -11,3 +11,5 @@ require_once(dirname(__FILE__).'/config/ProjectConfiguration.class.php');
 
 $configuration = ProjectConfiguration::getApplicationConfiguration('frontend', 'dev', true);
 sfContext::createInstance($configuration)->dispatch();
+
+//file_put_contents('./log/mem_dev.log', memory_get_peak_usage());
