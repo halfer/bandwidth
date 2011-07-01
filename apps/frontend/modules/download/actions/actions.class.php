@@ -22,6 +22,9 @@ class downloadActions extends sfActions
 		{
 			ini_set('magic_quotes_runtime', 0);
 		}
+		
+		// Prevent user aborting the download from stopping us logging stuff afterwards
+		ignore_user_abort(true);
 	}
 
 	/**
@@ -139,8 +142,8 @@ class downloadActions extends sfActions
 		// Send file to browser (@todo support partial/resume headers)
 		$file = fopen($localFile, "r");
 		$blockSize = 1024 * 4;		// (@todo This needs to be an admin setting)
-		$connectedAborted = false;
-		while (!feof($file) && !$connectedAborted)
+		$connectionAborted = false;
+		while (!feof($file) && !$connectionAborted)
 		{
 			$data = fread($file, $blockSize);
 			print $data;
@@ -148,12 +151,14 @@ class downloadActions extends sfActions
 			$connectionAborted = connection_aborted();
 
 			// If the user is still downloading, then periodically log an access time
-			if (!$connectedAborted)
+			if (!$connectionAborted)
 			{
 				if ((time() - $now) > $logFrequency)
 				{
 					$downloadLog->setAccessedAt($now = time());
+					$downloadLog->setByteCount($bytesOut);
 					$downloadLog->save();
+					$now = time();
 				}
 			}
 		}
@@ -161,7 +166,7 @@ class downloadActions extends sfActions
 		
 		// Update a few items before exiting
 		$downloadLog->setByteCount($bytesOut);
-		$downloadLog->setIsAborted($connectedAborted);
+		$downloadLog->setIsAborted($connectionAborted);
 		$downloadLog->setAccessedAt(time());
 		$downloadLog->save();
 		
