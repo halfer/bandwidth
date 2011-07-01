@@ -5,3 +5,6 @@ log/*
 
 # Any IDE folders to ignore
 nbproject
+
+# System files to ignore
+.DS_Store
