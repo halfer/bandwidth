@@ -20,7 +20,7 @@
     <?php foreach ($DownloadGroups as $DownloadGroup): ?>
     <tr>
       <td>
-		  <a href="<?php echo url_for('groups/edit?id='.$DownloadGroup->getId()) ?>">
+		  <a href="<?php echo url_for('@groups_edit?id='.$DownloadGroup->getId()) ?>">
 			<?php echo $DownloadGroup->getName() ?>
 		  </a>
 	  </td>

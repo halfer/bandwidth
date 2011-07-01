@@ -57,7 +57,7 @@ class groupsActions extends sfActions
     $this->forward404Unless($DownloadGroup, sprintf('Object DownloadGroup does not exist (%s).', $request->getParameter('id')));
     $DownloadGroup->delete();
 
-    $this->redirect('groups/index');
+    $this->redirect('@groups');
   }
 
   protected function processForm(sfWebRequest $request, sfForm $form)
@@ -67,7 +67,7 @@ class groupsActions extends sfActions
     {
       $DownloadGroup = $form->save();
 
-      $this->redirect('groups/edit?id='.$DownloadGroup->getId());
+      $this->redirect('@groups_edit?id='.$DownloadGroup->getId());
     }
   }
 }

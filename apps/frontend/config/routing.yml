@@ -16,7 +16,11 @@ add_new:
 
 groups:
   url:    /settings/groups
-  param:  { module: settings, action: groups }
+  param:  { module: groups, action: index }
+  
+groups_edit:
+  url:    /settings/groups/edit/*
+  param:  { module: groups, action: edit }
 
 files:
   url:    /settings/files
