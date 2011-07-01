@@ -32,4 +32,24 @@ class DownloadGroup extends BaseDownloadGroup
 			addSelectColumn('SUM(' . DownloadLogPeer::BYTE_COUNT . ')')->
 			addGroupByColumn(DownloadLogPeer::BYTE_COUNT);
 	}
+
+	/**
+	 * Returns true if files are still associated with this group
+	 */
+	public function inUse()
+	{
+		$c = new Criteria();
+		$c->add(FileGroupPeer::DOWNLOAD_GROUP_ID, $this->getId());
+		$count = FileGroupPeer::doCount($c);
+
+		return ($count > 0);
+	}
+
+	public function delete(PropelPDO $con = null)
+	{
+		if (!$this->inUse())
+		{
+			parent::delete($con);
+		}
+	}
 }
