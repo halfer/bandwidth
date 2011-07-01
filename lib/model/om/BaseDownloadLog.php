@@ -62,7 +62,6 @@ abstract class BaseDownloadLog extends BaseObject  implements Persistent
 
 	/**
 	 * The value for the is_aborted field.
-	 * Note: this column has a database default value of: false
 	 * @var        boolean
 	 */
 	protected $is_aborted;
@@ -85,27 +84,6 @@ abstract class BaseDownloadLog extends BaseObject  implements Persistent
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-		$this->is_aborted = false;
-	}
-
-	/**
-	 * Initializes internal state of BaseDownloadLog object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
 
 	/**
 	 * Get the [id] column value.
@@ -417,7 +395,7 @@ abstract class BaseDownloadLog extends BaseObject  implements Persistent
 			$v = (boolean) $v;
 		}
 
-		if ($this->is_aborted !== $v || $this->isNew()) {
+		if ($this->is_aborted !== $v) {
 			$this->is_aborted = $v;
 			$this->modifiedColumns[] = DownloadLogPeer::IS_ABORTED;
 		}
@@ -435,10 +413,6 @@ abstract class BaseDownloadLog extends BaseObject  implements Persistent
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			if ($this->is_aborted !== false) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -1167,7 +1141,6 @@ abstract class BaseDownloadLog extends BaseObject  implements Persistent
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
-		$this->applyDefaultValues();
 		$this->resetModified();
 		$this->setNew(true);
 		$this->setDeleted(false);

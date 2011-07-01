@@ -30,7 +30,7 @@ abstract class BaseDownloadLogForm extends BaseFormPropel
       'last_accessed_at' => new sfValidatorDateTime(array('required' => false)),
       'ip'               => new sfValidatorString(array('max_length' => 17)),
       'byte_count'       => new sfValidatorInteger(array('min' => -2147483648, 'max' => 2147483647)),
-      'is_aborted'       => new sfValidatorBoolean(),
+      'is_aborted'       => new sfValidatorBoolean(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('download_log[%s]');

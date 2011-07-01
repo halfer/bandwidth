@@ -44,7 +44,7 @@ class DownloadLogTableMap extends TableMap {
 		$this->addColumn('LAST_ACCESSED_AT', 'AccessedAt', 'TIMESTAMP', false, null, null);
 		$this->addColumn('IP', 'Ip', 'VARCHAR', true, 17, null);
 		$this->addColumn('BYTE_COUNT', 'ByteCount', 'INTEGER', true, null, null);
-		$this->addColumn('IS_ABORTED', 'IsAborted', 'BOOLEAN', true, null, false);
+		$this->addColumn('IS_ABORTED', 'IsAborted', 'BOOLEAN', false, null, null);
 		// validators
 	} // initialize()
 

@@ -47,7 +47,7 @@ propel:
     last_accessed_at: { phpName: AccessedAt, type: TIMESTAMP }
     ip: { phpName: Ip, type: VARCHAR, size: '17', required: true }
     byte_count: { phpName: ByteCount, type: INTEGER, required: true }
-    is_aborted: { phpName: IsAborted, type: BOOLEAN, required: true, default: false }
+    is_aborted: { phpName: IsAborted, type: BOOLEAN }
   upload_queue:
     _attributes: { phpName: UploadQueue }
     id: { phpName: Id, type: INTEGER, primaryKey: true, autoIncrement: true, required: true }

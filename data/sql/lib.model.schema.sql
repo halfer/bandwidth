@@ -85,7 +85,7 @@ CREATE TABLE "download_log"
 	"last_accessed_at" TIMESTAMP,
 	"ip" VARCHAR(17)  NOT NULL,
 	"byte_count" INTEGER  NOT NULL,
-	"is_aborted" BOOLEAN default 'f' NOT NULL,
+	"is_aborted" BOOLEAN,
 	PRIMARY KEY ("id")
 );
 
