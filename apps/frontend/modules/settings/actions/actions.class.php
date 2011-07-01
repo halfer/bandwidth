@@ -52,7 +52,6 @@ class settingsActions extends sfActions
 	{
 		// Null-named groups are for files with their own private settings
 		$c = new Criteria();
-		$c->add(DownloadGroupPeer::IS_ENABLED, true);
 		$c->add(DownloadGroupPeer::NAME, null, Criteria::ISNOTNULL);
 
 		// Set up pager
@@ -71,65 +70,23 @@ class settingsActions extends sfActions
 		else
 		{
 			$this->downloadGroup = DownloadGroupQuery::create()->
-				filterByIsEnabled(true)->
 				filterByPrimaryKey($this->groupId)->
 				findOne();
 			$this->forward404Unless($this->downloadGroup);
 		}
 		
-		$this->errors = $request->getAttribute('errors', array());
-	}
-
-	public function executeGroupSave(sfWebRequest $request)
-	{
-		// Get the download group loaded
-		$this->executeGroup($request);
+		$this->form = new DownloadGroupForm($this->downloadGroup);
 		
 		if ($request->getMethod() == sfRequest::POST)
 		{
-			// Replace empty lines with nulls
-			$params = $request->getParameter('group');
-			foreach ($params as $field => $value)
+			$this->form->bind($request->getParameter('download_group'));
+			if ($this->form->isValid())
 			{
-				if (!$value)
-				{
-					$params[$field] = null;
-				}
+				$this->form->save();
+				$groupId = $request->getParameter('groupId');
+				$this->redirect('@group?groupId=' . $groupId);
 			}
-			
-			// Do save here
-			$this->downloadGroup->fromArray($params, BasePeer::TYPE_FIELDNAME);
-			$this->downloadGroup->save();
-			
-			$groupId = $request->getParameter('groupId');
-			$this->redirect('@group?groupId=' . $groupId);
-		}		
-	}
-
-	public function validateGroupSave()
-	{
-		if ($this->getRequest()->getMethod() != sfRequest::POST)
-		{
-			return true;
 		}
-
-		$values = $this->getRequest()->getParameter('group');
-		$errors = array();
-		
-		if (!$values['name'])
-		{
-			$errors['name'] = 'A group must have a name';
-		}
-		
-		// @todo Read this from the db
-		if (strlen($values['name']) > 64)
-		{
-			$errors['name'] = 'Group names must not be longer than 64 characters';
-		}
-		
-		$this->getRequest()->setAttribute('errors', $errors);
-		
-		return !$errors;
 	}
 
 	public function handleError() {

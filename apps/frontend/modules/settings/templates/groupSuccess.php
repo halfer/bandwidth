@@ -12,56 +12,42 @@ all the settings we intend to support work with this arrangement?</em></p>
 <p><em>The offset allows us to say "reset daily at 10am", or "reset every Wednesday at 4pm" (given that a
 week in PHP starts on a fixed day).</em></p>
 
-<form method="post" name="group" action="<?php echo url_for('@group_save?groupId=' . $groupId) ?>">
+<form method="post" name="group" action="<?php echo url_for('@group?groupId=' . $groupId) ?>">
 	
-	<!--
-	<fieldset>
-		<legend>General (old)</legend>
-		<p>Name: <?php echo input_tag('group[name]', $downloadGroup->getName()) ?>
-
-		<p>Rate limit per file: <?php echo input_tag('group[rate_limit_per_file]', $downloadGroup->getRateLimit()) ?> bytes/sec</p>
-
-		<p>Rate limit per group: <?php echo input_tag('group[rate_limit_per_group]') ?> bytes/sec</p>
-
-		<p>Maximum number of downloads per file: <?php echo input_tag('group[count_limit_per_file]') ?></p>
-
-		<p>Maximum number of downloads per group: <?php echo input_tag('group[count_limit_per_group]') ?></p>
-
-		<p>Valid date range: <?php echo input_date_range_tag('group[date_range]', $dates = array(), array('rich' => true)) ?></p>
-
-		<p>Concurrent limit per file: <?php echo input_tag('group[concurrent_per_file]', $downloadGroup->getCountLimit()) ?></p>
-		
-		<p>Concurrent limit per file per IP: <?php echo input_tag('group[concurrent_per_file_per_ip]', null) ?></p>
-
-		<p>Concurrent limit per group: <?php echo input_tag('group[concurrent_per_group]') ?></p>
-		
-		<p>Concurrent limit per group per IP: <?php echo input_tag('group[concurrent_per_group_per_ip]', null) ?></p>
-	</fieldset>
-	-->
-
+	<?php /* @var $form DownloadGroupForm */ ?>
 	<fieldset>
 		<legend>General (new)</legend>
 		<p>
-			Name: <?php echo input_tag('group[name]', $downloadGroup->getName()) ?>
-			<span class="error"><?php echo error_line($errors, 'name') ?></span>
+			<?php echo $form['name']->renderRow() ?>	
 		</p>
-
-		<p>Rate limit: <?php echo input_tag('group[rate_limit]', $downloadGroup->getRateLimit()) ?> bytes/sec</p>
-
-		<p>Count limit: <?php echo input_tag('group[count_limit]', $downloadGroup->getCountLimit()) ?></p>
 		
-		<p>Bandwidth limit: <?php echo input_tag('group[bandwidth_limit]', $downloadGroup->getBandwidthLimit()) ?> bytes</p>
+		<p>
+			<?php echo $form['rate_limit']->renderRow() ?> bytes/sec
+		</p>
+		
+		<p>
+			<?php echo $form['count_limit']->renderRow() ?>
+		</p>
+		
+		<p>
+			<?php echo $form['bandwidth_limit']->renderRow() ?> bytes
+		</p>
+		
+		<p>
+			<?php echo $form['valid_from']->renderRow() ?> <br/>
+			<?php echo $form['valid_to']->renderRow() ?>
+		</p>
+		
+		<p>
+			<?php echo $form['concurrent_limit']->renderRow() ?>
+		</p>
 
 		<p>
-			Valid date range: <?php echo input_date_tag('group[valid_from]', $downloadGroup->getValidFrom(), array('rich' => true)) ?>
-			to
-			<?php echo input_date_tag('group[valid_to]', $downloadGroup->getValidTo(), array('rich' => true)) ?>
+			<?php echo $form['concurrent_limit_per_ip']->renderRow() ?>
 		</p>
-
-		<p>Concurrent limit: <?php echo input_tag('group[concurrent_limit]', $downloadGroup->getConcurrentLimit()) ?></p>
-		
-		<p>Concurrent limit per IP: <?php echo input_tag('group[concurrent_limit_per_ip]', $downloadGroup->getConcurrentLimitPerIp()) ?></p>
 	</fieldset>
+	
+	<?php echo $form['_csrf_token']->render() ?>
 	
 	<!--
 	Old approach
