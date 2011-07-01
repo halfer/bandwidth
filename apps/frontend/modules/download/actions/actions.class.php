@@ -10,19 +10,19 @@ class downloadActions extends sfActions
 {
 	const ERROR_COUNT = 'count';
 	const ERROR_BANDWIDTH = 'bandwidth';
-	
+
 	public function preExecute() {
 		parent::preExecute();
-		
+
 		// @todo Discover what happens if this is run in safe mode - is it disallowed?
 		set_time_limit ( 0 );
-		
+
 		// Prevents corruption that occurs with legacy settings (see php.net/fread notes)
 		if ((boolean) ini_get('magic_quotes_runtime'))
 		{
 			ini_set('magic_quotes_runtime', 0);
 		}
-		
+
 		// Prevent user aborting the download from stopping us logging stuff afterwards
 		ignore_user_abort(true);
 	}
@@ -58,20 +58,20 @@ class downloadActions extends sfActions
 			$path = substr($relativePath, 0, $slashPos);
 			$leafname = substr($relativePath, $slashPos + 1);
 		}
-		
+
 		// Get file row from database (@todo make proper error page)
 		$downloadFile = DownloadFileQuery::create()->
 			filterByName($leafname)->
 			filterByPath($path)->
 			findOne();
 		$this->forward404Unless($downloadFile, 'File not found');
-		
+
 		// Check the file is readable (@todo also email admin here, as this is a fault)
 		$this->forward404Unless(is_readable($localFile), 'File not available');
-		
+
 		// Get all the associated groups to determine how to treat the download
 		$groups = $downloadFile->getGroups();
-		
+
 		$ipAddress = $_SERVER['REMOTE_ADDR'];
 
 		// Check we've not exceeded any group count limits
@@ -79,37 +79,17 @@ class downloadActions extends sfActions
 			$this->forward($this->getModuleName(), 'countError');
 		}
 
-		// Old version of above, abandoned
-		//if ($countLimit = DownloadGroupPeer::getMinCountLimit($groups))
-		//{
-		//	$groupCount = DownloadGroupPeer::getMinCountUsage($groups);
-		//	if ($groupCount >= $countLimit)
-		//	{
-		//		// error
-		//	}
-		//}
-
 		// Check we've not exceeded any group b/w limits
 		if (!$downloadFile->isWithinGroupBandwidthLimits())
 		{
 			$this->forward($this->getModuleName(), 'bandwidthError');
 		}
 		
-		// Old version of above, abandoned
-		//if ($bandwidthLimit = DownloadGroupPeer::getMinBandwidthLimit($groups))
-		//{
-		//	$bandwidthCount = DownloadGroupPeer::getMinBandwidthUsage($groups);
-		//	if ($bandwidthCount >= $bandwidthLimit)
-		//	{				
-		//		// error
-		//	}
-		//}
-		
 		if (!$downloadFile->isWithinGroupConcurrencyLimits($ipAddress))
 		{
 			$this->forward($this->getModuleName(), 'concurrencyError');
 		}
-		
+
 		// Set up the bandwidth limiter if required
 		if ($rate = DownloadGroupPeer::getMinRateLimit($groups))
 		{
@@ -118,7 +98,7 @@ class downloadActions extends sfActions
 
 		// @todo The headers are going to need more options (view inline as well)
 		$headers = $this->getDownloadHeaders($leafname, filesize($localFile));
-		
+
 		// @todo Does PHP have a way for us to count bytes sent to the buffer?
 		$bytesOut = 0;
 		foreach ($headers as $header) {
@@ -126,7 +106,7 @@ class downloadActions extends sfActions
 			$bytesOut += strlen($header);
 		}
 		flush();
-		
+
 		// Log data here
 		$downloadLog = new DownloadLog();
 		$downloadLog->setDownloadFile($downloadFile);
@@ -138,7 +118,7 @@ class downloadActions extends sfActions
 		// Set up timer to periodically log that we're currently downloading
 		$logFrequency = 4;			// (@todo This needs to be an admin setting)
 		$now = time();
-		
+
 		// Send file to browser (@todo support partial/resume headers)
 		$file = fopen($localFile, "r");
 		$blockSize = 1024 * 4;		// (@todo This needs to be an admin setting)
@@ -163,13 +143,13 @@ class downloadActions extends sfActions
 			}
 		}
 		fclose($file);
-		
+
 		// Update a few items before exiting
 		$downloadLog->setByteCount($bytesOut);
 		$downloadLog->setIsAborted($connectionAborted);
 		$downloadLog->setAccessedAt(time());
 		$downloadLog->save();
-		
+
 		return sfView::NONE;
 	}
 
