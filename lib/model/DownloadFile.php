@@ -168,7 +168,7 @@ class DownloadFile extends BaseDownloadFile
 			clearSelectColumns()->
 			addSelectColumn(DownloadGroupPeer::ID)->
 			addSelectColumn('COUNT(*) AS count_concurrent')->
-			addSelectColumn('COUNT(' . DownloadGroupPeer::CONCURRENT_LIMIT_PER_IP . ') AS count_concurrent_by_ip')->
+			addSelectColumn('COUNT(' . DownloadGroupPeer::CONCURRENT_LIMIT_PER_IP . ') AS count_concurrent_per_ip')->
 			addSelectColumn(DownloadGroupPeer::CONCURRENT_LIMIT)->
 			addSelectColumn(DownloadGroupPeer::CONCURRENT_LIMIT_PER_IP)->
 			addJoin(DownloadLogPeer::DOWNLOAD_FILE_ID, FileGroupPeer::DOWNLOAD_FILE_ID)->
@@ -190,11 +190,13 @@ class DownloadFile extends BaseDownloadFile
 		$stmt = DownloadFilePeer::doSelectStmt($c);
 		
 		$isPermit = true;
-		while ($row = $stmt->fetch(PDO::FETCH_ASSOC) && $isPermit)
+		while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) && $isPermit)
 		{
-			$isPermitAny = ($row['count_concurrent'] <= $row['concurrent_limit']);
-			$isPermitIP = ($row['count_concurrent_by_ip'] <= $row['concurrent_limit_by_ip']);
-			$isPermit = $isPermitAny || $isPermitIP;
+			// These need to be less than, not less than/equal - since this download would
+			// take that last slot
+			$isPermitAny = ($row['count_concurrent'] < $row['concurrent_limit']);
+			$isPermitIP = ($row['count_concurrent_per_ip'] < $row['concurrent_limit_per_ip']);
+			$isPermit = $isPermitAny && $isPermitIP;
 
 			// @todo This needs to be turned off for the live environment
 			if (!$isPermit)
@@ -213,7 +215,6 @@ class DownloadFile extends BaseDownloadFile
 				}
 				sfContext::getInstance()->getLogger()->warning($message);
 			}
-
 		}
 		
 		return $isPermit;
