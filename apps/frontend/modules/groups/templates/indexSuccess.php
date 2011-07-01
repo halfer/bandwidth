@@ -10,12 +10,10 @@
       <th>Count limit</th>
       <th>Bandwidth limit</th>
       <th>Concurrent limit</th>
-      <th>Concurrent limit per ip</th>
+      <th>Concurrent limit per IP</th>
       <th>Valid from</th>
       <th>Valid to</th>
-      <th>Is use landing</th>
-      <th>Is use captcha</th>
-      <th>Is enabled</th>
+      <th>Enabled?</th>
     </tr>
   </thead>
   <tbody>
@@ -33,12 +31,12 @@
       <td><?php echo $DownloadGroup->getConcurrentLimitPerIp() ?></td>
       <td><?php echo $DownloadGroup->getValidFrom() ?></td>
       <td><?php echo $DownloadGroup->getValidTo() ?></td>
-      <td><?php echo $DownloadGroup->getIsUseLanding() ?></td>
-      <td><?php echo $DownloadGroup->getIsUseCaptcha() ?></td>
-      <td><?php echo $DownloadGroup->getIsEnabled() ?></td>
+      <td><?php echo $DownloadGroup->getIsEnabled() ? 'Yes' : 'No' ?></td>
     </tr>
     <?php endforeach; ?>
   </tbody>
 </table>
 
-  <a href="<?php echo url_for('groups/new') ?>">New</a>
+<p>
+	<a href="<?php echo url_for('groups/new') ?>">New</a>
+</p>

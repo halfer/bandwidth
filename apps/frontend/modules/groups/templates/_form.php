@@ -77,27 +77,6 @@
         </td>
       </tr>
       <tr>
-        <th><?php echo $form['is_use_landing']->renderLabel() ?></th>
-        <td>
-          <?php echo $form['is_use_landing']->renderError() ?>
-          <?php echo $form['is_use_landing'] ?>
-        </td>
-      </tr>
-      <tr>
-        <th><?php echo $form['is_use_captcha']->renderLabel() ?></th>
-        <td>
-          <?php echo $form['is_use_captcha']->renderError() ?>
-          <?php echo $form['is_use_captcha'] ?>
-        </td>
-      </tr>
-      <tr>
-        <th><?php echo $form['system_group_type']->renderLabel() ?></th>
-        <td>
-          <?php echo $form['system_group_type']->renderError() ?>
-          <?php echo $form['system_group_type'] ?>
-        </td>
-      </tr>
-      <tr>
         <th><?php echo $form['is_enabled']->renderLabel() ?></th>
         <td>
           <?php echo $form['is_enabled']->renderError() ?>
