@@ -21,15 +21,6 @@ propel:
     bandwidth_limit: { type: INTEGER, required: false }
     concurrent_limit: { type: INTEGER, required: false }
     concurrent_limit_per_ip: { type: INTEGER, required: false }
-#    daily_limit: { phpName: DailyLimit, type: INTEGER, required: false }
-#    daily_limit_per_ip: { phpName: DailyLimitPerIp, type: INTEGER, required: false }
-#    day_starts_at: { phpName: DayStartsAt, type: INTEGER, required: false }
-#    weekly_limit: { phpName: WeeklyLimit, type: INTEGER, required: false }
-#    weekly_limit_per_ip: { phpName: WeeklyLimitPerIp, type: INTEGER, required: false }
-#    week_starts_at: { phpName: WeekStartsAt, type: INTEGER, required: false }
-#    monthly_limit: { phpName: MonthlyLimit, type: INTEGER, required: false }
-#    monthly_limit_per_ip: { phpName: MonthlyLimitPerIp, type: INTEGER, required: false }
-#    month_starts_at: { phpName: MonthStartsAt, type: INTEGER, required: false }
     valid_from: { phpName: ValidFrom, type: DATE, required: false }
     valid_to: { phpName: ValidTo, type: DATE, required: false }
     is_use_landing: { phpName: IsUseLanding, type: BOOLEAN, required: false }
