@@ -1,6 +1,6 @@
 <?php
 
-class countErrorAction extends sfAction
+class concurrencyErrorAction extends sfAction
 {
 	public function execute($request)
 	{

@@ -107,7 +107,7 @@ class downloadActions extends sfActions
 		
 		if (!$downloadFile->isWithinGroupConcurrencyLimits($ipAddress))
 		{
-			
+			$this->forward($this->getModuleName(), 'concurrencyError');
 		}
 		
 		// Set up the bandwidth limiter if required
