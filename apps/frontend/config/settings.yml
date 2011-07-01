@@ -35,3 +35,7 @@ all:
     use_database:           true
 
     standard_helpers:       [Partial, Cache, Form, Error]
+
+    # Permits the sensible dd/mm formatting of dates!
+    i18n:                   true
+    default_culture:        en_GB
