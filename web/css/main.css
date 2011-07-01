@@ -6,3 +6,15 @@ span.error
 	color: red;
 	font-weight: bold;
 }
+
+table.light_border
+{
+	border-collapse: collapse;
+}
+
+table.light_border td,
+table.light_border th
+{
+	padding: 6px;
+	border: 1px solid gray;
+}

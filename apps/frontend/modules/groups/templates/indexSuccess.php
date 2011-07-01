@@ -1,6 +1,8 @@
-<h1>DownloadGroups List</h1>
+<?php include_partial('settings/menu') ?>
 
-<table>
+<h1>Groups</h1>
+
+<table class="light_border">
   <thead>
     <tr>
       <th>Name</th>
@@ -13,7 +15,6 @@
       <th>Valid to</th>
       <th>Is use landing</th>
       <th>Is use captcha</th>
-      <th>System group type</th>
       <th>Is enabled</th>
     </tr>
   </thead>
@@ -34,7 +35,6 @@
       <td><?php echo $DownloadGroup->getValidTo() ?></td>
       <td><?php echo $DownloadGroup->getIsUseLanding() ?></td>
       <td><?php echo $DownloadGroup->getIsUseCaptcha() ?></td>
-      <td><?php echo $DownloadGroup->getSystemGroupType() ?></td>
       <td><?php echo $DownloadGroup->getIsEnabled() ?></td>
     </tr>
     <?php endforeach; ?>
