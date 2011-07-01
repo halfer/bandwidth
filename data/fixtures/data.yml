@@ -7,7 +7,7 @@ DownloadGroup:
     system_group_type: <?php echo DownloadGroupPeer::TYPE_GROUP_DEFAULT . "\n" ?>
   rate_limited:
     name:              Rate limited demo
-    rate_limit:        <?php echo 100*1024 . "\n" ?>
+    rate_limit:        <?php echo 256*1024 . "\n" ?>
     count_limit:       10
   bandwidth_limited:
     name:              Bandwidth limited demo
