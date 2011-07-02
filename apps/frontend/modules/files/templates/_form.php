@@ -35,13 +35,6 @@
         </td>
       </tr>
       <tr>
-        <th><?php echo $form['checked_at']->renderLabel() ?></th>
-        <td>
-          <?php echo $form['checked_at']->renderError() ?>
-          <?php echo $form['checked_at'] ?>
-        </td>
-      </tr>
-      <tr>
         <th><?php echo $form['is_enabled']->renderLabel() ?></th>
         <td>
           <?php echo $form['is_enabled']->renderError() ?>

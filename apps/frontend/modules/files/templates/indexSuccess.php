@@ -3,10 +3,9 @@
 <table class="light_border">
   <thead>
     <tr>
-      <th>Id</th>
       <th>Name</th>
       <th>Path</th>
-      <th>Original uri</th>
+      <th>Original URI</th>
       <th>Created at</th>
       <th>Checked at</th>
       <th>Size</th>
@@ -16,8 +15,11 @@
   <tbody>
     <?php foreach ($DownloadFiles as $DownloadFile): ?>
     <tr>
-      <td><a href="<?php echo url_for('files/edit?id='.$DownloadFile->getId()) ?>"><?php echo $DownloadFile->getId() ?></a></td>
-      <td><?php echo $DownloadFile->getName() ?></td>
+      <td>
+		  <a href="<?php echo url_for('files/edit?id='.$DownloadFile->getId()) ?>">
+			  <?php echo $DownloadFile->getName() ?>
+		  </a>
+	  </td>
       <td><?php echo $DownloadFile->getPath() ?></td>
       <td><?php echo $DownloadFile->getOriginalUri() ?></td>
       <td><?php echo $DownloadFile->getCreatedAt() ?></td>

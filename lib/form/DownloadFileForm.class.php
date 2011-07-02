@@ -16,6 +16,8 @@ class DownloadFileForm extends BaseDownloadFileForm
 		unset($this->validatorSchema['path']);
 		unset($this->widgetSchema['created_at']);
 		unset($this->validatorSchema['created_at']);
+		unset($this->widgetSchema['checked_at']);
+		unset($this->validatorSchema['checked_at']);
 		unset($this->widgetSchema['size']);
 		unset($this->validatorSchema['size']);
 		
