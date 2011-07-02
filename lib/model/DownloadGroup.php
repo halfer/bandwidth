@@ -52,4 +52,9 @@ class DownloadGroup extends BaseDownloadGroup
 			parent::delete($con);
 		}
 	}
+
+	public function __toString()
+	{
+		return $this->name;
+	}
 }
