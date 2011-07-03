@@ -1,6 +1,6 @@
 <?php include_partial('settings/menu') ?>
 
-<h1>DownloadFiles List</h1>
+<h1>Files</h1>
 
 <table class="light_border">
   <thead>

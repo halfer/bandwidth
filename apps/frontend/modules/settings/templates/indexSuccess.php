@@ -21,7 +21,11 @@
 		<?php foreach ($results = $pager->getResults() as $downloadLog ): ?>
 			<tr>
 				<td><?php echo $downloadLog->getIp() ?></td>
-				<td><?php echo $downloadLog->getDownloadFile()->getName() ?></td>
+				<td>
+					<a href="<?php echo url_for('@files_edit?id=' . $downloadLog->getDownloadFile()->getId()) ?>">
+						<?php echo $downloadLog->getDownloadFile()->getName() ?>
+					</a>
+				</td>
 				<td><?php echo $downloadLog->getStartedAt() ?></td>
 				<td><?php echo $downloadLog->getAccessedAt() ?></td>
 				<td>
