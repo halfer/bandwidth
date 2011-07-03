@@ -14,21 +14,21 @@ class filesActions extends sfActions
     $this->DownloadFiles = DownloadFileQuery::create()->find();
   }
 
-  public function executeNew(sfWebRequest $request)
-  {
-    $this->form = new DownloadFileForm();
-  }
+	public function executeNew(sfWebRequest $request)
+	{
+		$this->form = new DownloadFileForm(null, $this->getUploadsPath());
+	}
 
-  public function executeCreate(sfWebRequest $request)
-  {
-    $this->forward404Unless($request->isMethod(sfRequest::POST));
+	public function executeCreate(sfWebRequest $request)
+	{
+		$this->forward404Unless($request->isMethod(sfRequest::POST));
 
-    $this->form = new DownloadFileForm();
+		$this->form = new DownloadFileForm(null, $this->getUploadsPath());
 
-    $this->processForm($request, $this->form);
+		$this->processForm($request, $this->form);
 
-    $this->setTemplate('new');
-  }
+		$this->setTemplate('new');
+	}
 
   public function executeEdit(sfWebRequest $request)
   {
