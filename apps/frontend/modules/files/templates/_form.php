@@ -64,7 +64,7 @@
         <th><?php echo $form['file_group_list']->renderLabel() ?></th>
         <td>
           <?php echo $form['file_group_list']->renderError() ?>
-          <?php echo $form['file_group_list'] ?>
+          <?php echo $form['file_group_list']->render(array('style' => 'height:150px;')) ?>
         </td>
       </tr>
     </tbody>

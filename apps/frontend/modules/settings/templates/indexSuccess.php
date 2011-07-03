@@ -7,7 +7,7 @@
 <?php /* @var $pager sfPropelPager */ ?>
 <?php /* @var $downloadLog DownloadLog */ ?>
 
-<table>
+<table class="light_border">
 	<thead>
 		<tr>
 			<th>IP</th>
