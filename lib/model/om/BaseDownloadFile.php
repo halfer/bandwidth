@@ -37,6 +37,13 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 	protected $name;
 
 	/**
+	 * The value for the folder field.
+	 * Note: this column has a database default value of: ''
+	 * @var        string
+	 */
+	protected $folder;
+
+	/**
 	 * The value for the path field.
 	 * @var        string
 	 */
@@ -110,6 +117,7 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 	 */
 	public function applyDefaultValues()
 	{
+		$this->folder = '';
 		$this->is_enabled = true;
 	}
 
@@ -141,6 +149,16 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * Get the [folder] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getFolder()
+	{
+		return $this->folder;
 	}
 
 	/**
@@ -288,6 +306,26 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 
 		return $this;
 	} // setName()
+
+	/**
+	 * Set the value of [folder] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     DownloadFile The current object (for fluent API support)
+	 */
+	public function setFolder($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->folder !== $v || $this->isNew()) {
+			$this->folder = $v;
+			$this->modifiedColumns[] = DownloadFilePeer::FOLDER;
+		}
+
+		return $this;
+	} // setFolder()
 
 	/**
 	 * Set the value of [path] column.
@@ -477,6 +515,10 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 	 */
 	public function hasOnlyDefaultValues()
 	{
+			if ($this->folder !== '') {
+				return false;
+			}
+
 			if ($this->is_enabled !== true) {
 				return false;
 			}
@@ -505,12 +547,13 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->path = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->original_uri = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->checked_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->size = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->is_enabled = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+			$this->folder = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->path = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->original_uri = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->checked_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->size = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+			$this->is_enabled = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -519,7 +562,7 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 8; // 8 = DownloadFilePeer::NUM_COLUMNS - DownloadFilePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 9; // 9 = DownloadFilePeer::NUM_COLUMNS - DownloadFilePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating DownloadFile object", $e);
@@ -919,21 +962,24 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 				return $this->getName();
 				break;
 			case 2:
-				return $this->getPath();
+				return $this->getFolder();
 				break;
 			case 3:
-				return $this->getOriginalUri();
+				return $this->getPath();
 				break;
 			case 4:
-				return $this->getCreatedAt();
+				return $this->getOriginalUri();
 				break;
 			case 5:
-				return $this->getCheckedAt();
+				return $this->getCreatedAt();
 				break;
 			case 6:
-				return $this->getSize();
+				return $this->getCheckedAt();
 				break;
 			case 7:
+				return $this->getSize();
+				break;
+			case 8:
 				return $this->getIsEnabled();
 				break;
 			default:
@@ -961,12 +1007,13 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
-			$keys[2] => $this->getPath(),
-			$keys[3] => $this->getOriginalUri(),
-			$keys[4] => $this->getCreatedAt(),
-			$keys[5] => $this->getCheckedAt(),
-			$keys[6] => $this->getSize(),
-			$keys[7] => $this->getIsEnabled(),
+			$keys[2] => $this->getFolder(),
+			$keys[3] => $this->getPath(),
+			$keys[4] => $this->getOriginalUri(),
+			$keys[5] => $this->getCreatedAt(),
+			$keys[6] => $this->getCheckedAt(),
+			$keys[7] => $this->getSize(),
+			$keys[8] => $this->getIsEnabled(),
 		);
 		return $result;
 	}
@@ -1005,21 +1052,24 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 				$this->setName($value);
 				break;
 			case 2:
-				$this->setPath($value);
+				$this->setFolder($value);
 				break;
 			case 3:
-				$this->setOriginalUri($value);
+				$this->setPath($value);
 				break;
 			case 4:
-				$this->setCreatedAt($value);
+				$this->setOriginalUri($value);
 				break;
 			case 5:
-				$this->setCheckedAt($value);
+				$this->setCreatedAt($value);
 				break;
 			case 6:
-				$this->setSize($value);
+				$this->setCheckedAt($value);
 				break;
 			case 7:
+				$this->setSize($value);
+				break;
+			case 8:
 				$this->setIsEnabled($value);
 				break;
 		} // switch()
@@ -1048,12 +1098,13 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setPath($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setOriginalUri($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setCheckedAt($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setSize($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setIsEnabled($arr[$keys[7]]);
+		if (array_key_exists($keys[2], $arr)) $this->setFolder($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setPath($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setOriginalUri($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setCheckedAt($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setSize($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setIsEnabled($arr[$keys[8]]);
 	}
 
 	/**
@@ -1067,6 +1118,7 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(DownloadFilePeer::ID)) $criteria->add(DownloadFilePeer::ID, $this->id);
 		if ($this->isColumnModified(DownloadFilePeer::NAME)) $criteria->add(DownloadFilePeer::NAME, $this->name);
+		if ($this->isColumnModified(DownloadFilePeer::FOLDER)) $criteria->add(DownloadFilePeer::FOLDER, $this->folder);
 		if ($this->isColumnModified(DownloadFilePeer::PATH)) $criteria->add(DownloadFilePeer::PATH, $this->path);
 		if ($this->isColumnModified(DownloadFilePeer::ORIGINAL_URI)) $criteria->add(DownloadFilePeer::ORIGINAL_URI, $this->original_uri);
 		if ($this->isColumnModified(DownloadFilePeer::CREATED_AT)) $criteria->add(DownloadFilePeer::CREATED_AT, $this->created_at);
@@ -1135,6 +1187,7 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 		$copyObj->setName($this->name);
+		$copyObj->setFolder($this->folder);
 		$copyObj->setPath($this->path);
 		$copyObj->setOriginalUri($this->original_uri);
 		$copyObj->setCreatedAt($this->created_at);
@@ -1594,6 +1647,7 @@ abstract class BaseDownloadFile extends BaseObject  implements Persistent
 	{
 		$this->id = null;
 		$this->name = null;
+		$this->folder = null;
 		$this->path = null;
 		$this->original_uri = null;
 		$this->created_at = null;

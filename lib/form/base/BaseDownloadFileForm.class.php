@@ -16,6 +16,7 @@ abstract class BaseDownloadFileForm extends BaseFormPropel
     $this->setWidgets(array(
       'id'              => new sfWidgetFormInputHidden(),
       'name'            => new sfWidgetFormInputText(),
+      'folder'          => new sfWidgetFormInputText(),
       'path'            => new sfWidgetFormInputText(),
       'original_uri'    => new sfWidgetFormInputText(),
       'created_at'      => new sfWidgetFormDateTime(),
@@ -28,6 +29,7 @@ abstract class BaseDownloadFileForm extends BaseFormPropel
     $this->setValidators(array(
       'id'              => new sfValidatorPropelChoice(array('model' => 'DownloadFile', 'column' => 'id', 'required' => false)),
       'name'            => new sfValidatorString(array('max_length' => 255)),
+      'folder'          => new sfValidatorString(array('max_length' => 100)),
       'path'            => new sfValidatorString(array('max_length' => 255)),
       'original_uri'    => new sfValidatorString(array('max_length' => 512, 'required' => false)),
       'created_at'      => new sfValidatorDateTime(),

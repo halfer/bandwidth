@@ -13,6 +13,7 @@ abstract class BaseDownloadFileFormFilter extends BaseFormFilterPropel
   {
     $this->setWidgets(array(
       'name'            => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'folder'          => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'path'            => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'original_uri'    => new sfWidgetFormFilterInput(),
       'created_at'      => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
@@ -24,6 +25,7 @@ abstract class BaseDownloadFileFormFilter extends BaseFormFilterPropel
 
     $this->setValidators(array(
       'name'            => new sfValidatorPass(array('required' => false)),
+      'folder'          => new sfValidatorPass(array('required' => false)),
       'path'            => new sfValidatorPass(array('required' => false)),
       'original_uri'    => new sfValidatorPass(array('required' => false)),
       'created_at'      => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
@@ -75,6 +77,7 @@ abstract class BaseDownloadFileFormFilter extends BaseFormFilterPropel
     return array(
       'id'              => 'Number',
       'name'            => 'Text',
+      'folder'          => 'Text',
       'path'            => 'Text',
       'original_uri'    => 'Text',
       'created_at'      => 'Date',

@@ -40,11 +40,6 @@ class downloadActions extends sfActions
 	{
 		// @todo Ensure there are no hacks in this filename
 		$relativePath = $request->getParameter('filename');
-
-		// Calculate absolute pathname
-		$localFile = sfConfig::get('sf_root_dir') . DIRECTORY_SEPARATOR .
-			'files' . DIRECTORY_SEPARATOR .
-			$relativePath;
 		
 		// Get path and leafname string components
 		$slashPos = strrpos($relativePath, '/');
@@ -62,9 +57,14 @@ class downloadActions extends sfActions
 		// Get file row from database (@todo make proper error page)
 		$downloadFile = DownloadFileQuery::create()->
 			filterByName($leafname)->
-			filterByPath($path)->
+			filterByFolder($path)->
 			findOne();
 		$this->forward404Unless($downloadFile, 'File not found');
+
+		// Calculate absolute pathname
+		$localFile = sfConfig::get('sf_root_dir') . DIRECTORY_SEPARATOR .
+			'files' . DIRECTORY_SEPARATOR .
+			$downloadFile->getPath();
 
 		// Check the file is readable (@todo also email admin here, as this is a fault)
 		$this->forward404Unless(is_readable($localFile), 'File not available');

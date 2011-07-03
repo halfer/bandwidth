@@ -5,7 +5,11 @@ propel:
   download_file:
     _attributes: { phpName: DownloadFile }
     id: { phpName: Id, type: INTEGER, primaryKey: true, autoIncrement: true, required: true }
+    # Filename to present to user
     name: { phpName: Name, type: VARCHAR, size: '255', required: true }
+    # Folder location on server
+    folder: { phpName: Folder, type: VARCHAR, size: 100, required: true, default: '' }
+    # Relative folder+file in uploads folder
     path: { phpName: Path, type: VARCHAR, size: '255', required: true }
     original_uri: { phpName: OriginalUri, type: VARCHAR, size: '512', required: false }
     created_at: { phpName: CreatedAt, type: TIMESTAMP, required: true }

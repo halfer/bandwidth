@@ -20,7 +20,14 @@
     </tfoot>
     <tbody>
       <?php echo $form->renderGlobalErrors() ?>
-      <tr>
+       <tr>
+        <th><?php echo $form['path']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['path']->renderError() ?>
+          <?php echo $form['path'] ?>
+        </td>
+      </tr>
+	   <tr>
         <th><?php echo $form['name']->renderLabel() ?></th>
         <td>
           <?php echo $form['name']->renderError() ?>

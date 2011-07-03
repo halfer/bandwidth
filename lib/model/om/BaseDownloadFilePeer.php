@@ -26,7 +26,7 @@ abstract class BaseDownloadFilePeer {
 	const TM_CLASS = 'DownloadFileTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 8;
+	const NUM_COLUMNS = 9;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -36,6 +36,9 @@ abstract class BaseDownloadFilePeer {
 
 	/** the column name for the NAME field */
 	const NAME = 'download_file.NAME';
+
+	/** the column name for the FOLDER field */
+	const FOLDER = 'download_file.FOLDER';
 
 	/** the column name for the PATH field */
 	const PATH = 'download_file.PATH';
@@ -78,12 +81,12 @@ abstract class BaseDownloadFilePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Path', 'OriginalUri', 'CreatedAt', 'CheckedAt', 'Size', 'IsEnabled', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'path', 'originalUri', 'createdAt', 'checkedAt', 'size', 'isEnabled', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::PATH, self::ORIGINAL_URI, self::CREATED_AT, self::CHECKED_AT, self::SIZE, self::IS_ENABLED, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'PATH', 'ORIGINAL_URI', 'CREATED_AT', 'CHECKED_AT', 'SIZE', 'IS_ENABLED', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'path', 'original_uri', 'created_at', 'checked_at', 'size', 'is_enabled', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Folder', 'Path', 'OriginalUri', 'CreatedAt', 'CheckedAt', 'Size', 'IsEnabled', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'folder', 'path', 'originalUri', 'createdAt', 'checkedAt', 'size', 'isEnabled', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::FOLDER, self::PATH, self::ORIGINAL_URI, self::CREATED_AT, self::CHECKED_AT, self::SIZE, self::IS_ENABLED, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'FOLDER', 'PATH', 'ORIGINAL_URI', 'CREATED_AT', 'CHECKED_AT', 'SIZE', 'IS_ENABLED', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'folder', 'path', 'original_uri', 'created_at', 'checked_at', 'size', 'is_enabled', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	/**
@@ -93,12 +96,12 @@ abstract class BaseDownloadFilePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Path' => 2, 'OriginalUri' => 3, 'CreatedAt' => 4, 'CheckedAt' => 5, 'Size' => 6, 'IsEnabled' => 7, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'path' => 2, 'originalUri' => 3, 'createdAt' => 4, 'checkedAt' => 5, 'size' => 6, 'isEnabled' => 7, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::PATH => 2, self::ORIGINAL_URI => 3, self::CREATED_AT => 4, self::CHECKED_AT => 5, self::SIZE => 6, self::IS_ENABLED => 7, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'PATH' => 2, 'ORIGINAL_URI' => 3, 'CREATED_AT' => 4, 'CHECKED_AT' => 5, 'SIZE' => 6, 'IS_ENABLED' => 7, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'path' => 2, 'original_uri' => 3, 'created_at' => 4, 'checked_at' => 5, 'size' => 6, 'is_enabled' => 7, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Folder' => 2, 'Path' => 3, 'OriginalUri' => 4, 'CreatedAt' => 5, 'CheckedAt' => 6, 'Size' => 7, 'IsEnabled' => 8, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'folder' => 2, 'path' => 3, 'originalUri' => 4, 'createdAt' => 5, 'checkedAt' => 6, 'size' => 7, 'isEnabled' => 8, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::FOLDER => 2, self::PATH => 3, self::ORIGINAL_URI => 4, self::CREATED_AT => 5, self::CHECKED_AT => 6, self::SIZE => 7, self::IS_ENABLED => 8, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'FOLDER' => 2, 'PATH' => 3, 'ORIGINAL_URI' => 4, 'CREATED_AT' => 5, 'CHECKED_AT' => 6, 'SIZE' => 7, 'IS_ENABLED' => 8, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'folder' => 2, 'path' => 3, 'original_uri' => 4, 'created_at' => 5, 'checked_at' => 6, 'size' => 7, 'is_enabled' => 8, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	/**
@@ -172,6 +175,7 @@ abstract class BaseDownloadFilePeer {
 		if (null === $alias) {
 			$criteria->addSelectColumn(DownloadFilePeer::ID);
 			$criteria->addSelectColumn(DownloadFilePeer::NAME);
+			$criteria->addSelectColumn(DownloadFilePeer::FOLDER);
 			$criteria->addSelectColumn(DownloadFilePeer::PATH);
 			$criteria->addSelectColumn(DownloadFilePeer::ORIGINAL_URI);
 			$criteria->addSelectColumn(DownloadFilePeer::CREATED_AT);
@@ -181,6 +185,7 @@ abstract class BaseDownloadFilePeer {
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.FOLDER');
 			$criteria->addSelectColumn($alias . '.PATH');
 			$criteria->addSelectColumn($alias . '.ORIGINAL_URI');
 			$criteria->addSelectColumn($alias . '.CREATED_AT');

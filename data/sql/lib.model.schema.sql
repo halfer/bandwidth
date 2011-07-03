@@ -10,6 +10,7 @@ CREATE TABLE "download_file"
 (
 	"id" serial  NOT NULL,
 	"name" VARCHAR(255)  NOT NULL,
+	"folder" VARCHAR(100) default '' NOT NULL,
 	"path" VARCHAR(255)  NOT NULL,
 	"original_uri" VARCHAR(512),
 	"created_at" TIMESTAMP  NOT NULL,

@@ -40,6 +40,7 @@ class DownloadFileTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+		$this->addColumn('FOLDER', 'Folder', 'VARCHAR', true, 100, '');
 		$this->addColumn('PATH', 'Path', 'VARCHAR', true, 255, null);
 		$this->addColumn('ORIGINAL_URI', 'OriginalUri', 'VARCHAR', false, 512, null);
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);

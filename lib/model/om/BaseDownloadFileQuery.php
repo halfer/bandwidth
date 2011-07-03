@@ -8,6 +8,7 @@
  *
  * @method     DownloadFileQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     DownloadFileQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     DownloadFileQuery orderByFolder($order = Criteria::ASC) Order by the folder column
  * @method     DownloadFileQuery orderByPath($order = Criteria::ASC) Order by the path column
  * @method     DownloadFileQuery orderByOriginalUri($order = Criteria::ASC) Order by the original_uri column
  * @method     DownloadFileQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -17,6 +18,7 @@
  *
  * @method     DownloadFileQuery groupById() Group by the id column
  * @method     DownloadFileQuery groupByName() Group by the name column
+ * @method     DownloadFileQuery groupByFolder() Group by the folder column
  * @method     DownloadFileQuery groupByPath() Group by the path column
  * @method     DownloadFileQuery groupByOriginalUri() Group by the original_uri column
  * @method     DownloadFileQuery groupByCreatedAt() Group by the created_at column
@@ -45,6 +47,7 @@
  *
  * @method     DownloadFile findOneById(int $id) Return the first DownloadFile filtered by the id column
  * @method     DownloadFile findOneByName(string $name) Return the first DownloadFile filtered by the name column
+ * @method     DownloadFile findOneByFolder(string $folder) Return the first DownloadFile filtered by the folder column
  * @method     DownloadFile findOneByPath(string $path) Return the first DownloadFile filtered by the path column
  * @method     DownloadFile findOneByOriginalUri(string $original_uri) Return the first DownloadFile filtered by the original_uri column
  * @method     DownloadFile findOneByCreatedAt(string $created_at) Return the first DownloadFile filtered by the created_at column
@@ -54,6 +57,7 @@
  *
  * @method     array findById(int $id) Return DownloadFile objects filtered by the id column
  * @method     array findByName(string $name) Return DownloadFile objects filtered by the name column
+ * @method     array findByFolder(string $folder) Return DownloadFile objects filtered by the folder column
  * @method     array findByPath(string $path) Return DownloadFile objects filtered by the path column
  * @method     array findByOriginalUri(string $original_uri) Return DownloadFile objects filtered by the original_uri column
  * @method     array findByCreatedAt(string $created_at) Return DownloadFile objects filtered by the created_at column
@@ -206,6 +210,28 @@ abstract class BaseDownloadFileQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(DownloadFilePeer::NAME, $name, $comparison);
+	}
+
+	/**
+	 * Filter the query on the folder column
+	 * 
+	 * @param     string $folder The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    DownloadFileQuery The current query, for fluid interface
+	 */
+	public function filterByFolder($folder = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($folder)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $folder)) {
+				$folder = str_replace('*', '%', $folder);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(DownloadFilePeer::FOLDER, $folder, $comparison);
 	}
 
 	/**
