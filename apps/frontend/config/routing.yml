@@ -5,7 +5,7 @@ download:
   url:   /download/:filename
   param: { module: download, action: index }
   requirements: { filename: .+ }
-  
+
 index:
   url:    /settings
   param:  { module: settings, action: index }
@@ -24,16 +24,12 @@ groups_edit:
 
 files:
   url:    /settings/files
-  param:  { module: settings, action: files }
+  param:  { module: files, action: index }
 
-group:
-  url:    /settings/group/:groupId
-  param:  { module: settings, action: group }
+files_edit:
+  url:    /settings/files/edit/*
+  param:  { module: files, action: edit }
 
-group_save:
-  url:    /settings/group-save/:groupId
-  param:  { module: settings, action: groupSave }
-  
 file:
   url:    /settings/file/:fileId
   param:  { module: settings, action: file }

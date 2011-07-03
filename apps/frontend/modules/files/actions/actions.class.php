@@ -56,7 +56,7 @@ class filesActions extends sfActions
     $this->forward404Unless($DownloadFile, sprintf('Object DownloadFile does not exist (%s).', $request->getParameter('id')));
     $DownloadFile->delete();
 
-    $this->redirect('files/index');
+    $this->redirect('@files');
   }
 
 	protected function processForm(sfWebRequest $request, sfForm $form)
@@ -81,7 +81,7 @@ class filesActions extends sfActions
 				$DownloadFile = $form->save();
 			}
 
-			$this->redirect('files/edit?id='.$DownloadFile->getId());
+			$this->redirect('@files_edit?id='.$DownloadFile->getId());
 		}
 	}
 

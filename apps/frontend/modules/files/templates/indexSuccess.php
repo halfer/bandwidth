@@ -1,3 +1,5 @@
+<?php include_partial('settings/menu') ?>
+
 <h1>DownloadFiles List</h1>
 
 <table class="light_border">
@@ -9,7 +11,7 @@
       <th>Created at</th>
       <th>Checked at</th>
       <th>Size</th>
-      <th>Is enabled</th>
+      <th>Enabled?</th>
     </tr>
   </thead>
   <tbody>
