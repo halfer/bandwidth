@@ -1,3 +1,5 @@
+<?php /* @var $form sfForm */ ?>
+
 <?php use_stylesheets_for_form($form) ?>
 <?php use_javascripts_for_form($form) ?>
 
@@ -20,6 +22,16 @@
     </tfoot>
     <tbody>
       <?php echo $form->renderGlobalErrors() ?>
+		<?php if (!$form->getObject()->isNew()): ?>
+			<tr>
+				<th>Download count:</th>
+				<td><?php echo $form->getObject()->getCountUsage() ?> (inc. incomplete downloads)</td>
+			</tr>
+			<tr>
+				<th>Downloaded bandwidth:</th>
+				<td><?php echo $form->getObject()->getBandwidthUsage() ?> bytes</td>
+			</tr>
+		<?php endif ?>
        <tr>
         <th><?php echo $form['path']->renderLabel() ?></th>
         <td>

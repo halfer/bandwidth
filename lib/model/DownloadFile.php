@@ -219,4 +219,40 @@ class DownloadFile extends BaseDownloadFile
 		
 		return $isPermit;
 	}
+
+	public function getBandwidthUsage()
+	{
+		$c = new Criteria();
+		$c->
+			clearSelectColumns()->
+			addSelectColumn('SUM(' . DownloadLogPeer::BYTE_COUNT . ') AS bandwidth_usage')->
+			add(DownloadLogPeer::DOWNLOAD_FILE_ID, $this->getId());
+		$stmt = DownloadFilePeer::doSelectStmt($c);
+
+		$usage = 0;
+		if ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+		{
+			$usage = $row['bandwidth_usage'];
+		}
+		
+		return $usage ? $usage : 0;
+	}
+
+	public function getCountUsage()
+	{
+		$c = new Criteria();
+		$c->
+			clearSelectColumns()->
+			addSelectColumn('COUNT(*) AS count_usage')->
+			add(DownloadLogPeer::DOWNLOAD_FILE_ID, $this->getId());
+		$stmt = DownloadFilePeer::doSelectStmt($c);
+
+		$usage = 0;
+		if ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+		{
+			$usage = $row['count_usage'];
+		}
+		
+		return $usage;		
+	}
 }
