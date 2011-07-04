@@ -1,3 +1,5 @@
+<?php use_helper('PagerNavigation') ?>
+
 <?php include_partial('settings/menu') ?>
 
 <h1>Files</h1>
@@ -15,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach ($DownloadFiles as $DownloadFile): ?>
+    <?php foreach ($results = $pager->getResults() as $DownloadFile): ?>
     <tr>
       <td>
 		  <a href="<?php echo url_for('files/edit?id='.$DownloadFile->getId()) ?>">
@@ -32,6 +34,8 @@
     <?php endforeach; ?>
   </tbody>
 </table>
+
+<?php echo pager_navigation($pager, '@files') ?>
 
 <p>
 	<a href="<?php echo url_for('files/new') ?>">New</a>

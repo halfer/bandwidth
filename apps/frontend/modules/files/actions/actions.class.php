@@ -9,10 +9,15 @@
  */
 class filesActions extends sfActions
 {
-  public function executeIndex(sfWebRequest $request)
-  {
-    $this->DownloadFiles = DownloadFileQuery::create()->find();
-  }
+	public function executeIndex(sfWebRequest $request)
+	{
+		// Set up pager
+		$this->pager = new sfPropelPager('DownloadFile');
+		$this->pager->setCriteria(new Criteria());
+		$this->pager->setMaxPerPage(15);
+		$this->pager->setPage($request->getParameter('page'));
+		$this->pager->init();
+	}
 
 	public function executeNew(sfWebRequest $request)
 	{
