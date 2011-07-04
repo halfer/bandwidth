@@ -1,3 +1,5 @@
+<?php use_helper('PagerNavigation') ?>
+
 <?php include_partial('settings/menu') ?>
 
 <h1>Groups</h1>
@@ -17,7 +19,7 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach ($DownloadGroups as $DownloadGroup): ?>
+    <?php foreach ($results = $pager->getResults() as $DownloadGroup): ?>
     <tr>
       <td>
 		  <a href="<?php echo url_for('@groups_edit?id='.$DownloadGroup->getId()) ?>">
@@ -36,6 +38,8 @@
     <?php endforeach; ?>
   </tbody>
 </table>
+
+<?php echo pager_navigation($pager, '@groups') ?>
 
 <p>
 	<a href="<?php echo url_for('groups/new') ?>">New</a>
