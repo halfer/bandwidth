@@ -50,6 +50,8 @@ class DownloadGroupTableMap extends TableMap {
 		$this->addColumn('IS_USE_LANDING', 'IsUseLanding', 'BOOLEAN', false, null, null);
 		$this->addColumn('IS_USE_CAPTCHA', 'IsUseCaptcha', 'BOOLEAN', false, null, null);
 		$this->addColumn('SYSTEM_GROUP_TYPE', 'SystemGroupType', 'INTEGER', false, null, null);
+		$this->addColumn('RESET_FREQUENCY', 'ResetFrequency', 'INTEGER', false, null, null);
+		$this->addColumn('RESET_OFFSET', 'ResetOffset', 'INTEGER', false, null, null);
 		$this->addColumn('IS_ENABLED', 'IsEnabled', 'BOOLEAN', true, null, true);
 		// validators
 	} // initialize()

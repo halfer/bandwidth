@@ -97,6 +97,18 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 	protected $system_group_type;
 
 	/**
+	 * The value for the reset_frequency field.
+	 * @var        int
+	 */
+	protected $reset_frequency;
+
+	/**
+	 * The value for the reset_offset field.
+	 * @var        int
+	 */
+	protected $reset_offset;
+
+	/**
 	 * The value for the is_enabled field.
 	 * Note: this column has a database default value of: true
 	 * @var        boolean
@@ -307,6 +319,26 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 	public function getSystemGroupType()
 	{
 		return $this->system_group_type;
+	}
+
+	/**
+	 * Get the [reset_frequency] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getResetFrequency()
+	{
+		return $this->reset_frequency;
+	}
+
+	/**
+	 * Get the [reset_offset] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getResetOffset()
+	{
+		return $this->reset_offset;
 	}
 
 	/**
@@ -618,6 +650,46 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 	} // setSystemGroupType()
 
 	/**
+	 * Set the value of [reset_frequency] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     DownloadGroup The current object (for fluent API support)
+	 */
+	public function setResetFrequency($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->reset_frequency !== $v) {
+			$this->reset_frequency = $v;
+			$this->modifiedColumns[] = DownloadGroupPeer::RESET_FREQUENCY;
+		}
+
+		return $this;
+	} // setResetFrequency()
+
+	/**
+	 * Set the value of [reset_offset] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     DownloadGroup The current object (for fluent API support)
+	 */
+	public function setResetOffset($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->reset_offset !== $v) {
+			$this->reset_offset = $v;
+			$this->modifiedColumns[] = DownloadGroupPeer::RESET_OFFSET;
+		}
+
+		return $this;
+	} // setResetOffset()
+
+	/**
 	 * Set the value of [is_enabled] column.
 	 * 
 	 * @param      boolean $v new value
@@ -685,7 +757,9 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 			$this->is_use_landing = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
 			$this->is_use_captcha = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
 			$this->system_group_type = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-			$this->is_enabled = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
+			$this->reset_frequency = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
+			$this->reset_offset = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
+			$this->is_enabled = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -694,7 +768,7 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 13; // 13 = DownloadGroupPeer::NUM_COLUMNS - DownloadGroupPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 15; // 15 = DownloadGroupPeer::NUM_COLUMNS - DownloadGroupPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating DownloadGroup object", $e);
@@ -1080,6 +1154,12 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 				return $this->getSystemGroupType();
 				break;
 			case 12:
+				return $this->getResetFrequency();
+				break;
+			case 13:
+				return $this->getResetOffset();
+				break;
+			case 14:
 				return $this->getIsEnabled();
 				break;
 			default:
@@ -1117,7 +1197,9 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 			$keys[9] => $this->getIsUseLanding(),
 			$keys[10] => $this->getIsUseCaptcha(),
 			$keys[11] => $this->getSystemGroupType(),
-			$keys[12] => $this->getIsEnabled(),
+			$keys[12] => $this->getResetFrequency(),
+			$keys[13] => $this->getResetOffset(),
+			$keys[14] => $this->getIsEnabled(),
 		);
 		return $result;
 	}
@@ -1186,6 +1268,12 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 				$this->setSystemGroupType($value);
 				break;
 			case 12:
+				$this->setResetFrequency($value);
+				break;
+			case 13:
+				$this->setResetOffset($value);
+				break;
+			case 14:
 				$this->setIsEnabled($value);
 				break;
 		} // switch()
@@ -1224,7 +1312,9 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 		if (array_key_exists($keys[9], $arr)) $this->setIsUseLanding($arr[$keys[9]]);
 		if (array_key_exists($keys[10], $arr)) $this->setIsUseCaptcha($arr[$keys[10]]);
 		if (array_key_exists($keys[11], $arr)) $this->setSystemGroupType($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setIsEnabled($arr[$keys[12]]);
+		if (array_key_exists($keys[12], $arr)) $this->setResetFrequency($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setResetOffset($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setIsEnabled($arr[$keys[14]]);
 	}
 
 	/**
@@ -1248,6 +1338,8 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 		if ($this->isColumnModified(DownloadGroupPeer::IS_USE_LANDING)) $criteria->add(DownloadGroupPeer::IS_USE_LANDING, $this->is_use_landing);
 		if ($this->isColumnModified(DownloadGroupPeer::IS_USE_CAPTCHA)) $criteria->add(DownloadGroupPeer::IS_USE_CAPTCHA, $this->is_use_captcha);
 		if ($this->isColumnModified(DownloadGroupPeer::SYSTEM_GROUP_TYPE)) $criteria->add(DownloadGroupPeer::SYSTEM_GROUP_TYPE, $this->system_group_type);
+		if ($this->isColumnModified(DownloadGroupPeer::RESET_FREQUENCY)) $criteria->add(DownloadGroupPeer::RESET_FREQUENCY, $this->reset_frequency);
+		if ($this->isColumnModified(DownloadGroupPeer::RESET_OFFSET)) $criteria->add(DownloadGroupPeer::RESET_OFFSET, $this->reset_offset);
 		if ($this->isColumnModified(DownloadGroupPeer::IS_ENABLED)) $criteria->add(DownloadGroupPeer::IS_ENABLED, $this->is_enabled);
 
 		return $criteria;
@@ -1321,6 +1413,8 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 		$copyObj->setIsUseLanding($this->is_use_landing);
 		$copyObj->setIsUseCaptcha($this->is_use_captcha);
 		$copyObj->setSystemGroupType($this->system_group_type);
+		$copyObj->setResetFrequency($this->reset_frequency);
+		$copyObj->setResetOffset($this->reset_offset);
 		$copyObj->setIsEnabled($this->is_enabled);
 
 		if ($deepCopy) {
@@ -1530,6 +1624,8 @@ abstract class BaseDownloadGroup extends BaseObject  implements Persistent
 		$this->is_use_landing = null;
 		$this->is_use_captcha = null;
 		$this->system_group_type = null;
+		$this->reset_frequency = null;
+		$this->reset_offset = null;
 		$this->is_enabled = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;

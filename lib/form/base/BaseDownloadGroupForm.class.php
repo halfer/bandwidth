@@ -26,6 +26,8 @@ abstract class BaseDownloadGroupForm extends BaseFormPropel
       'is_use_landing'          => new sfWidgetFormInputCheckbox(),
       'is_use_captcha'          => new sfWidgetFormInputCheckbox(),
       'system_group_type'       => new sfWidgetFormInputText(),
+      'reset_frequency'         => new sfWidgetFormInputText(),
+      'reset_offset'            => new sfWidgetFormInputText(),
       'is_enabled'              => new sfWidgetFormInputCheckbox(),
       'file_group_list'         => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'DownloadFile')),
     ));
@@ -43,6 +45,8 @@ abstract class BaseDownloadGroupForm extends BaseFormPropel
       'is_use_landing'          => new sfValidatorBoolean(array('required' => false)),
       'is_use_captcha'          => new sfValidatorBoolean(array('required' => false)),
       'system_group_type'       => new sfValidatorInteger(array('min' => -2147483648, 'max' => 2147483647, 'required' => false)),
+      'reset_frequency'         => new sfValidatorInteger(array('min' => -2147483648, 'max' => 2147483647, 'required' => false)),
+      'reset_offset'            => new sfValidatorInteger(array('min' => -2147483648, 'max' => 2147483647, 'required' => false)),
       'is_enabled'              => new sfValidatorBoolean(),
       'file_group_list'         => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'DownloadFile', 'required' => false)),
     ));

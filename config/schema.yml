@@ -30,6 +30,8 @@ propel:
     is_use_landing: { phpName: IsUseLanding, type: BOOLEAN, required: false }
     is_use_captcha: { phpName: IsUseCaptcha, type: BOOLEAN, required: false }
     system_group_type: { phpName: SystemGroupType, type: INTEGER, required: false }
+    reset_frequency: { type: INTEGER, required: false }
+    reset_offset: { type: INTEGER, required: false }
     is_enabled: { phpName: IsEnabled, type: BOOLEAN, required: true, default: true }
   file_group:
     download_file_id: { phpName: DownloadFileId, type: INTEGER, primaryKey: true, required: true, foreignTable: download_file, foreignReference: id }

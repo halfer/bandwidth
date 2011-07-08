@@ -45,6 +45,8 @@ CREATE TABLE "download_group"
 	"is_use_landing" BOOLEAN,
 	"is_use_captcha" BOOLEAN,
 	"system_group_type" INTEGER,
+	"reset_frequency" INTEGER,
+	"reset_offset" INTEGER,
 	"is_enabled" BOOLEAN default 't' NOT NULL,
 	PRIMARY KEY ("id")
 );

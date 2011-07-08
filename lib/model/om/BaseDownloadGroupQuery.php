@@ -18,6 +18,8 @@
  * @method     DownloadGroupQuery orderByIsUseLanding($order = Criteria::ASC) Order by the is_use_landing column
  * @method     DownloadGroupQuery orderByIsUseCaptcha($order = Criteria::ASC) Order by the is_use_captcha column
  * @method     DownloadGroupQuery orderBySystemGroupType($order = Criteria::ASC) Order by the system_group_type column
+ * @method     DownloadGroupQuery orderByResetFrequency($order = Criteria::ASC) Order by the reset_frequency column
+ * @method     DownloadGroupQuery orderByResetOffset($order = Criteria::ASC) Order by the reset_offset column
  * @method     DownloadGroupQuery orderByIsEnabled($order = Criteria::ASC) Order by the is_enabled column
  *
  * @method     DownloadGroupQuery groupById() Group by the id column
@@ -32,6 +34,8 @@
  * @method     DownloadGroupQuery groupByIsUseLanding() Group by the is_use_landing column
  * @method     DownloadGroupQuery groupByIsUseCaptcha() Group by the is_use_captcha column
  * @method     DownloadGroupQuery groupBySystemGroupType() Group by the system_group_type column
+ * @method     DownloadGroupQuery groupByResetFrequency() Group by the reset_frequency column
+ * @method     DownloadGroupQuery groupByResetOffset() Group by the reset_offset column
  * @method     DownloadGroupQuery groupByIsEnabled() Group by the is_enabled column
  *
  * @method     DownloadGroupQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -57,6 +61,8 @@
  * @method     DownloadGroup findOneByIsUseLanding(boolean $is_use_landing) Return the first DownloadGroup filtered by the is_use_landing column
  * @method     DownloadGroup findOneByIsUseCaptcha(boolean $is_use_captcha) Return the first DownloadGroup filtered by the is_use_captcha column
  * @method     DownloadGroup findOneBySystemGroupType(int $system_group_type) Return the first DownloadGroup filtered by the system_group_type column
+ * @method     DownloadGroup findOneByResetFrequency(int $reset_frequency) Return the first DownloadGroup filtered by the reset_frequency column
+ * @method     DownloadGroup findOneByResetOffset(int $reset_offset) Return the first DownloadGroup filtered by the reset_offset column
  * @method     DownloadGroup findOneByIsEnabled(boolean $is_enabled) Return the first DownloadGroup filtered by the is_enabled column
  *
  * @method     array findById(int $id) Return DownloadGroup objects filtered by the id column
@@ -71,6 +77,8 @@
  * @method     array findByIsUseLanding(boolean $is_use_landing) Return DownloadGroup objects filtered by the is_use_landing column
  * @method     array findByIsUseCaptcha(boolean $is_use_captcha) Return DownloadGroup objects filtered by the is_use_captcha column
  * @method     array findBySystemGroupType(int $system_group_type) Return DownloadGroup objects filtered by the system_group_type column
+ * @method     array findByResetFrequency(int $reset_frequency) Return DownloadGroup objects filtered by the reset_frequency column
+ * @method     array findByResetOffset(int $reset_offset) Return DownloadGroup objects filtered by the reset_offset column
  * @method     array findByIsEnabled(boolean $is_enabled) Return DownloadGroup objects filtered by the is_enabled column
  *
  * @package    propel.generator.lib.model.om
@@ -500,6 +508,68 @@ abstract class BaseDownloadGroupQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(DownloadGroupPeer::SYSTEM_GROUP_TYPE, $systemGroupType, $comparison);
+	}
+
+	/**
+	 * Filter the query on the reset_frequency column
+	 * 
+	 * @param     int|array $resetFrequency The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    DownloadGroupQuery The current query, for fluid interface
+	 */
+	public function filterByResetFrequency($resetFrequency = null, $comparison = null)
+	{
+		if (is_array($resetFrequency)) {
+			$useMinMax = false;
+			if (isset($resetFrequency['min'])) {
+				$this->addUsingAlias(DownloadGroupPeer::RESET_FREQUENCY, $resetFrequency['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($resetFrequency['max'])) {
+				$this->addUsingAlias(DownloadGroupPeer::RESET_FREQUENCY, $resetFrequency['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(DownloadGroupPeer::RESET_FREQUENCY, $resetFrequency, $comparison);
+	}
+
+	/**
+	 * Filter the query on the reset_offset column
+	 * 
+	 * @param     int|array $resetOffset The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    DownloadGroupQuery The current query, for fluid interface
+	 */
+	public function filterByResetOffset($resetOffset = null, $comparison = null)
+	{
+		if (is_array($resetOffset)) {
+			$useMinMax = false;
+			if (isset($resetOffset['min'])) {
+				$this->addUsingAlias(DownloadGroupPeer::RESET_OFFSET, $resetOffset['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($resetOffset['max'])) {
+				$this->addUsingAlias(DownloadGroupPeer::RESET_OFFSET, $resetOffset['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(DownloadGroupPeer::RESET_OFFSET, $resetOffset, $comparison);
 	}
 
 	/**

@@ -26,7 +26,7 @@ abstract class BaseDownloadGroupPeer {
 	const TM_CLASS = 'DownloadGroupTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 13;
+	const NUM_COLUMNS = 15;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -67,6 +67,12 @@ abstract class BaseDownloadGroupPeer {
 	/** the column name for the SYSTEM_GROUP_TYPE field */
 	const SYSTEM_GROUP_TYPE = 'download_group.SYSTEM_GROUP_TYPE';
 
+	/** the column name for the RESET_FREQUENCY field */
+	const RESET_FREQUENCY = 'download_group.RESET_FREQUENCY';
+
+	/** the column name for the RESET_OFFSET field */
+	const RESET_OFFSET = 'download_group.RESET_OFFSET';
+
 	/** the column name for the IS_ENABLED field */
 	const IS_ENABLED = 'download_group.IS_ENABLED';
 
@@ -93,12 +99,12 @@ abstract class BaseDownloadGroupPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'RateLimit', 'CountLimit', 'BandwidthLimit', 'ConcurrentLimit', 'ConcurrentLimitPerIp', 'ValidFrom', 'ValidTo', 'IsUseLanding', 'IsUseCaptcha', 'SystemGroupType', 'IsEnabled', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'rateLimit', 'countLimit', 'bandwidthLimit', 'concurrentLimit', 'concurrentLimitPerIp', 'validFrom', 'validTo', 'isUseLanding', 'isUseCaptcha', 'systemGroupType', 'isEnabled', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::RATE_LIMIT, self::COUNT_LIMIT, self::BANDWIDTH_LIMIT, self::CONCURRENT_LIMIT, self::CONCURRENT_LIMIT_PER_IP, self::VALID_FROM, self::VALID_TO, self::IS_USE_LANDING, self::IS_USE_CAPTCHA, self::SYSTEM_GROUP_TYPE, self::IS_ENABLED, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'RATE_LIMIT', 'COUNT_LIMIT', 'BANDWIDTH_LIMIT', 'CONCURRENT_LIMIT', 'CONCURRENT_LIMIT_PER_IP', 'VALID_FROM', 'VALID_TO', 'IS_USE_LANDING', 'IS_USE_CAPTCHA', 'SYSTEM_GROUP_TYPE', 'IS_ENABLED', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'rate_limit', 'count_limit', 'bandwidth_limit', 'concurrent_limit', 'concurrent_limit_per_ip', 'valid_from', 'valid_to', 'is_use_landing', 'is_use_captcha', 'system_group_type', 'is_enabled', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'RateLimit', 'CountLimit', 'BandwidthLimit', 'ConcurrentLimit', 'ConcurrentLimitPerIp', 'ValidFrom', 'ValidTo', 'IsUseLanding', 'IsUseCaptcha', 'SystemGroupType', 'ResetFrequency', 'ResetOffset', 'IsEnabled', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'rateLimit', 'countLimit', 'bandwidthLimit', 'concurrentLimit', 'concurrentLimitPerIp', 'validFrom', 'validTo', 'isUseLanding', 'isUseCaptcha', 'systemGroupType', 'resetFrequency', 'resetOffset', 'isEnabled', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::RATE_LIMIT, self::COUNT_LIMIT, self::BANDWIDTH_LIMIT, self::CONCURRENT_LIMIT, self::CONCURRENT_LIMIT_PER_IP, self::VALID_FROM, self::VALID_TO, self::IS_USE_LANDING, self::IS_USE_CAPTCHA, self::SYSTEM_GROUP_TYPE, self::RESET_FREQUENCY, self::RESET_OFFSET, self::IS_ENABLED, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'RATE_LIMIT', 'COUNT_LIMIT', 'BANDWIDTH_LIMIT', 'CONCURRENT_LIMIT', 'CONCURRENT_LIMIT_PER_IP', 'VALID_FROM', 'VALID_TO', 'IS_USE_LANDING', 'IS_USE_CAPTCHA', 'SYSTEM_GROUP_TYPE', 'RESET_FREQUENCY', 'RESET_OFFSET', 'IS_ENABLED', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'rate_limit', 'count_limit', 'bandwidth_limit', 'concurrent_limit', 'concurrent_limit_per_ip', 'valid_from', 'valid_to', 'is_use_landing', 'is_use_captcha', 'system_group_type', 'reset_frequency', 'reset_offset', 'is_enabled', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
 	);
 
 	/**
@@ -108,12 +114,12 @@ abstract class BaseDownloadGroupPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'RateLimit' => 2, 'CountLimit' => 3, 'BandwidthLimit' => 4, 'ConcurrentLimit' => 5, 'ConcurrentLimitPerIp' => 6, 'ValidFrom' => 7, 'ValidTo' => 8, 'IsUseLanding' => 9, 'IsUseCaptcha' => 10, 'SystemGroupType' => 11, 'IsEnabled' => 12, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'rateLimit' => 2, 'countLimit' => 3, 'bandwidthLimit' => 4, 'concurrentLimit' => 5, 'concurrentLimitPerIp' => 6, 'validFrom' => 7, 'validTo' => 8, 'isUseLanding' => 9, 'isUseCaptcha' => 10, 'systemGroupType' => 11, 'isEnabled' => 12, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::RATE_LIMIT => 2, self::COUNT_LIMIT => 3, self::BANDWIDTH_LIMIT => 4, self::CONCURRENT_LIMIT => 5, self::CONCURRENT_LIMIT_PER_IP => 6, self::VALID_FROM => 7, self::VALID_TO => 8, self::IS_USE_LANDING => 9, self::IS_USE_CAPTCHA => 10, self::SYSTEM_GROUP_TYPE => 11, self::IS_ENABLED => 12, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'RATE_LIMIT' => 2, 'COUNT_LIMIT' => 3, 'BANDWIDTH_LIMIT' => 4, 'CONCURRENT_LIMIT' => 5, 'CONCURRENT_LIMIT_PER_IP' => 6, 'VALID_FROM' => 7, 'VALID_TO' => 8, 'IS_USE_LANDING' => 9, 'IS_USE_CAPTCHA' => 10, 'SYSTEM_GROUP_TYPE' => 11, 'IS_ENABLED' => 12, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'rate_limit' => 2, 'count_limit' => 3, 'bandwidth_limit' => 4, 'concurrent_limit' => 5, 'concurrent_limit_per_ip' => 6, 'valid_from' => 7, 'valid_to' => 8, 'is_use_landing' => 9, 'is_use_captcha' => 10, 'system_group_type' => 11, 'is_enabled' => 12, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'RateLimit' => 2, 'CountLimit' => 3, 'BandwidthLimit' => 4, 'ConcurrentLimit' => 5, 'ConcurrentLimitPerIp' => 6, 'ValidFrom' => 7, 'ValidTo' => 8, 'IsUseLanding' => 9, 'IsUseCaptcha' => 10, 'SystemGroupType' => 11, 'ResetFrequency' => 12, 'ResetOffset' => 13, 'IsEnabled' => 14, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'rateLimit' => 2, 'countLimit' => 3, 'bandwidthLimit' => 4, 'concurrentLimit' => 5, 'concurrentLimitPerIp' => 6, 'validFrom' => 7, 'validTo' => 8, 'isUseLanding' => 9, 'isUseCaptcha' => 10, 'systemGroupType' => 11, 'resetFrequency' => 12, 'resetOffset' => 13, 'isEnabled' => 14, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::RATE_LIMIT => 2, self::COUNT_LIMIT => 3, self::BANDWIDTH_LIMIT => 4, self::CONCURRENT_LIMIT => 5, self::CONCURRENT_LIMIT_PER_IP => 6, self::VALID_FROM => 7, self::VALID_TO => 8, self::IS_USE_LANDING => 9, self::IS_USE_CAPTCHA => 10, self::SYSTEM_GROUP_TYPE => 11, self::RESET_FREQUENCY => 12, self::RESET_OFFSET => 13, self::IS_ENABLED => 14, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'RATE_LIMIT' => 2, 'COUNT_LIMIT' => 3, 'BANDWIDTH_LIMIT' => 4, 'CONCURRENT_LIMIT' => 5, 'CONCURRENT_LIMIT_PER_IP' => 6, 'VALID_FROM' => 7, 'VALID_TO' => 8, 'IS_USE_LANDING' => 9, 'IS_USE_CAPTCHA' => 10, 'SYSTEM_GROUP_TYPE' => 11, 'RESET_FREQUENCY' => 12, 'RESET_OFFSET' => 13, 'IS_ENABLED' => 14, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'rate_limit' => 2, 'count_limit' => 3, 'bandwidth_limit' => 4, 'concurrent_limit' => 5, 'concurrent_limit_per_ip' => 6, 'valid_from' => 7, 'valid_to' => 8, 'is_use_landing' => 9, 'is_use_captcha' => 10, 'system_group_type' => 11, 'reset_frequency' => 12, 'reset_offset' => 13, 'is_enabled' => 14, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
 	);
 
 	/**
@@ -197,6 +203,8 @@ abstract class BaseDownloadGroupPeer {
 			$criteria->addSelectColumn(DownloadGroupPeer::IS_USE_LANDING);
 			$criteria->addSelectColumn(DownloadGroupPeer::IS_USE_CAPTCHA);
 			$criteria->addSelectColumn(DownloadGroupPeer::SYSTEM_GROUP_TYPE);
+			$criteria->addSelectColumn(DownloadGroupPeer::RESET_FREQUENCY);
+			$criteria->addSelectColumn(DownloadGroupPeer::RESET_OFFSET);
 			$criteria->addSelectColumn(DownloadGroupPeer::IS_ENABLED);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
@@ -211,6 +219,8 @@ abstract class BaseDownloadGroupPeer {
 			$criteria->addSelectColumn($alias . '.IS_USE_LANDING');
 			$criteria->addSelectColumn($alias . '.IS_USE_CAPTCHA');
 			$criteria->addSelectColumn($alias . '.SYSTEM_GROUP_TYPE');
+			$criteria->addSelectColumn($alias . '.RESET_FREQUENCY');
+			$criteria->addSelectColumn($alias . '.RESET_OFFSET');
 			$criteria->addSelectColumn($alias . '.IS_ENABLED');
 		}
 	}

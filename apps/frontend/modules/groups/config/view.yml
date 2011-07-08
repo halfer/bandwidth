@@ -1,0 +1,2 @@
+default:
+  javascripts:    [/js/jquery-1.6.min.js]

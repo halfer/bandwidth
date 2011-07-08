@@ -23,6 +23,8 @@ abstract class BaseDownloadGroupFormFilter extends BaseFormFilterPropel
       'is_use_landing'          => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'is_use_captcha'          => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'system_group_type'       => new sfWidgetFormFilterInput(),
+      'reset_frequency'         => new sfWidgetFormFilterInput(),
+      'reset_offset'            => new sfWidgetFormFilterInput(),
       'is_enabled'              => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'file_group_list'         => new sfWidgetFormPropelChoice(array('model' => 'DownloadFile', 'add_empty' => true)),
     ));
@@ -39,6 +41,8 @@ abstract class BaseDownloadGroupFormFilter extends BaseFormFilterPropel
       'is_use_landing'          => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'is_use_captcha'          => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'system_group_type'       => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'reset_frequency'         => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'reset_offset'            => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'is_enabled'              => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'file_group_list'         => new sfValidatorPropelChoice(array('model' => 'DownloadFile', 'required' => false)),
     ));
@@ -95,6 +99,8 @@ abstract class BaseDownloadGroupFormFilter extends BaseFormFilterPropel
       'is_use_landing'          => 'Boolean',
       'is_use_captcha'          => 'Boolean',
       'system_group_type'       => 'Number',
+      'reset_frequency'         => 'Number',
+      'reset_offset'            => 'Number',
       'is_enabled'              => 'Boolean',
       'file_group_list'         => 'ManyKey',
     );
