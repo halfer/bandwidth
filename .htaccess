@@ -19,7 +19,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteCond %{REQUEST_URI} ^\/css\/(.*)$
   RewriteRule ^(.*)$ /web/$1 [L]
   RewriteCond %{REQUEST_URI} ^\/js\/(.*)$
-  RewriteRule ^(.*)$ /js/$1 [L]
+  RewriteRule ^(.*)$ /web/$1 [L]
 
   # we check if the .html version is here (caching)
   RewriteRule ^$ index.html [QSA]
