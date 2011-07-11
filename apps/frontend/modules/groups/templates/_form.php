@@ -4,53 +4,63 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
-		/**
-		 * No longer used - previously had a menu to choose frequency of group reset
-		 */
-		function handleResetChange()
+		// Hide the time block to start with
+		$('#frequency_demo').hide();
+		
+		$('.frequency_inputs input').change(function()
 		{
-			var frequency = $('#download_group_reset_chooser').val();
-			frequency = parseInt(frequency);
-
-			if (frequency)
+			// Only send frequency values if there is some input to analyse!
+			var inputs = $('.frequency_inputs input');
+			var send = false;
+			inputs.each(function(index, element)
 			{
-				$('.reset_rules').show();
-				
-				var strFreq, strFreqPlural;
-				switch (frequency)
+				if (element.value)
 				{
-					case 60 * 60:
-						strFreq = 'hour';
-						strFreqPlural = 'hours';
-						break;
-					case 60 * 60 * 24:
-						strFreq = 'day';
-						strFreqPlural = 'days';
-						break;
-					case 60 * 60 * 24 * 7:
-						strFreq = 'week';
-						strFreqPlural = 'weeks';
-						break;
+					send = true;
 				}
-				
-				// Decide whether this should be plural
-				var multiplier = $('#download_group_reset_multiplier').val();
-				multiplier = parseFloat(multiplier);
-				if (multiplier != 1)
-				{
-					strFreq = strFreqPlural;
-				}
-				$('#reset_freq_string').html(strFreq);
+			});
+			
+			// Let's hide time block if there's no input
+			if (!send)
+			{
+				$('#frequency_demo').hide();
 			}
-			else
+			
+			if (send)
 			{
-				$('.reset_rules').hide();
-			}			
-		}
+				// @todo Strip out only the field we want - currently sending the whole form!
+				var data = $('#group_form').serialize();
+				
+				// OK, make ajax request to server
+				$.ajax({
+					type: 'POST',
+					url: '<?php echo url_for('@groups_get_freq') ?>',
+					data: data,
+					success: function(data)
+					{
+						$('#frequency_demo').show();
+						if (data.error)
+						{
+							// @todo Highlight in an error colour
+							$('#frequency_demo_cell').html(data.error);
+						}
+						else
+						{
+							
+							$('#frequency_demo_cell').html(data.result);
+						}
+					},
+					dataType: 'json'
+				});
+			}
+		})
+		
 	});
 </script>
 
-<form action="<?php echo url_for('groups/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="post" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?>>
+<form action="<?php echo url_for('groups/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>"
+	  method="post" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?>
+	  id="group_form">
 	<?php if (!$form->getObject()->isNew()): ?>
 	<input type="hidden" name="sf_method" value="put" />
 	<?php endif; ?>
@@ -131,7 +141,7 @@
 		
 		<table>
 			<tbody>
-			  <tr>
+			  <tr class="frequency_inputs">
 				  <th>Reset frequency</th>
 				  <td>
 					<?php echo $form['reset_frequency']->renderError() ?>
@@ -164,15 +174,10 @@
 					<?php echo $form['reset_offset[seconds]'] ?> seconds
 				  </td>
 			  </tr>
-			  <!--
-			  This line is the above plus the offset e.g. with an offset of 3h:
-	 
-			  7 Jul 3:00:00 2011 - 8 Jul 3:0:00 2011			  
-			  <tr>
-				  <th>Modified time period</th>
-				  <td>(JS widget)</td>
+			  <tr id="frequency_demo">
+				  <th>Current period</th>
+				  <td id="frequency_demo_cell">&nbsp;</td>
 			  </tr>
-			  -->
 			</tbody>
 		</table>
 	</fieldset>

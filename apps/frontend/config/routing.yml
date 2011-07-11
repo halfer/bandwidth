@@ -22,6 +22,10 @@ groups_edit:
   url:    /settings/groups/edit/*
   param:  { module: groups, action: edit }
 
+groups_get_freq:
+  url:    /settings/groups/get-freq
+  param:  { module: groups, action: getFrequency }
+
 files:
   url:    /settings/files
   param:  { module: files, action: index }

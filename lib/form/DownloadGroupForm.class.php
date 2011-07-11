@@ -117,35 +117,16 @@ class DownloadGroupForm extends BaseDownloadGroupForm
 
 	public function checkTimeInput(sfValidatorCallback $validator, $value)
 	{
-		foreach ($value as $key => $subValue)
+		if (!BandwidthUtils::validateTimeParts($value))
 		{
-			if ($subValue)
-			{
-				if (!is_numeric($subValue) || (strpos($subValue, '.') !== false))
-				{
-					throw new sfValidatorError(
-						$validator,
-						'Time components may contain whole numbers only'
-					);
-				}
-			}
+			throw new sfValidatorError(
+				$validator,
+				'Time components may contain whole numbers only'
+			);
 		}
 
 		// Clean the result here
-		return $this->getTimestampFromTimeParts($value);
-	}
-
-	protected function getTimestampFromTimeParts($parts)
-	{
-		$totalSec = 0;
-
-		$totalSec += $parts['seconds'] + 0;
-		$totalSec += $parts['minutes'] * 60;
-		$totalSec += $parts['hours'] * 60 * 60;
-		$totalSec += $parts['days'] * 60 * 60 * 24;
-		$totalSec += $parts['weeks'] * 60 * 60 * 24 * 7;
-		
-		return $totalSec;
+		return BandwidthUtils::getTimestampFromTimeParts($value);
 	}
 
 	protected function getTimePartsFromTimestamp($timestamp)

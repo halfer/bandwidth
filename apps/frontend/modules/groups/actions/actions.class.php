@@ -75,4 +75,48 @@ class groupsActions extends sfActions
       $this->redirect('@groups_edit?id='.$DownloadGroup->getId());
     }
   }
+
+	public function executeGetFrequency(sfWebRequest $request)
+	{
+		// Turn off the debugging toolbar
+		sfConfig::set('sf_web_debug', false);
+		
+		$params = $request->getParameter('download_group');
+
+		$result = '';
+		if (isset($params['reset_frequency']))
+		{
+			$parts = $params['reset_frequency'];
+			$valid = BandwidthUtils::validateTimeParts($parts);
+			if ($valid)
+			{
+				$frequency = BandwidthUtils::getTimestampFromTimeParts($parts);
+				$now = time();
+				$timeStart = ( (int) ($now / $frequency)) * $frequency;
+				$timeEnd = $timeStart + $frequency;
+				
+				$result = array(
+					'result' => 
+						'<em>' .
+						date('r', $timeStart) .
+						'</em> to <em>' .
+						date('r', $timeEnd) .
+						'</em>',
+					'error' => null,
+				);
+			}
+			else
+			{
+				$result = array(
+					'error' => 'Invalid time spec',
+				);
+			}
+		}
+
+		$json = json_encode(
+			$result
+		);
+
+		return $this->renderText($json);
+	}
 }
