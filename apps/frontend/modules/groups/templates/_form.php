@@ -152,18 +152,7 @@
 					<?php echo $form['reset_frequency[seconds]'] ?> seconds
 				  </td>
 			  </tr>
-			  <!--
-			  This line is for a JS widget to illustrate the CURRENT block that obeys this frequency
-			  
-			  e.g. if now is 7 Jul 20:47 2011, and freq = 1d, then this would show:
-	 
-			  7 Jul 0:00:00 2011 - 8 Jul 0:0:00 2011
-			  <tr>
-				  <th>Base time period</th>
-				  <td>(JS widget)</td>
-			  </tr>
-			  -->
-			  <tr>
+			  <tr class="frequency_inputs">
 				  <th>Reset offset</th>
 				  <td>
 					<?php echo $form['reset_offset']->renderError() ?>

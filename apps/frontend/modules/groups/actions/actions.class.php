@@ -83,7 +83,9 @@ class groupsActions extends sfActions
 		
 		$params = $request->getParameter('download_group');
 
+		// Grab reset frequency, in seconds
 		$result = '';
+		$valid = false;
 		if (isset($params['reset_frequency']))
 		{
 			$parts = $params['reset_frequency'];
@@ -91,26 +93,47 @@ class groupsActions extends sfActions
 			if ($valid)
 			{
 				$frequency = BandwidthUtils::getTimestampFromTimeParts($parts);
-				$now = time();
-				$timeStart = ( (int) ($now / $frequency)) * $frequency;
-				$timeEnd = $timeStart + $frequency;
-				
-				$result = array(
-					'result' => 
-						'<em>' .
-						date('r', $timeStart) .
-						'</em> to <em>' .
-						date('r', $timeEnd) .
-						'</em>',
-					'error' => null,
-				);
+				list($timeStart, $timeEnd) = BandwidthUtils::getTimestampRange($frequency);
 			}
 			else
 			{
 				$result = array(
-					'error' => 'Invalid time spec',
+					'error' => 'Invalid frequency spec',
 				);
 			}
+		}
+
+		// Potentially add offset to time values
+		if (isset($params['reset_offset']) && $valid)
+		{
+			$parts = $params['reset_offset'];
+			$valid = BandwidthUtils::validateTimeParts($parts);
+			if ($valid)
+			{
+				$offset = BandwidthUtils::getTimestampFromTimeParts($parts);
+				$timeStart += $offset;
+				$timeEnd += $offset;
+			}
+			else
+			{
+				$result = array(
+					'error' => 'Invalid offset spec',
+				);
+			}
+		}
+		
+		// If all validations encountered above were ok, then create result string
+		if ($valid)
+		{
+			$result = array(
+				'result' => 
+					'<em>' .
+					date('r', $timeStart) .
+					'</em> to <em>' .
+					date('r', $timeEnd) .
+					'</em>',
+				'error' => null,
+			);
 		}
 
 		$json = json_encode(

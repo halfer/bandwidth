@@ -43,4 +43,14 @@ class BandwidthUtils
 		
 		return $totalSec;
 	}
+
+	public static function getTimestampRange($frequency)
+	{
+		$now = time();
+		$timeStart = ( (int) ($now / $frequency)) * $frequency;
+		$timeEnd = $timeStart + $frequency;
+
+		return array($timeStart, $timeEnd);
+	}
+
 }
