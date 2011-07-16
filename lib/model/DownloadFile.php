@@ -71,10 +71,10 @@ class DownloadFile extends BaseDownloadFile
 	 * Basic query:
 	 *  
 	 * SELECT group.id, SUM(log.byte_count), group.bandwidth_limit
-	 * FROM log
-	 * JOIN filegroup
-	 * JOIN group
-	 * WHERE file.id = this.id
+	 * FROM group
+	 * INNER JOIN filegroup
+	 * LEFT JOIN log
+	 * WHERE filegroup.file_id = this.id
 	 *		AND group.bandwidth_limit IS NOT NULL
 	 * GROUP BY group.id, group.bandwidth_limit
 	 * 
@@ -82,22 +82,40 @@ class DownloadFile extends BaseDownloadFile
 	 */
 	public function isWithinGroupBandwidthLimits()
 	{
+		// See if we have any reset limits to respect
+		$groups = $this->getGroups();
+		$hasResets = $this->groupsContainReset($groups);
+
+		// This is how to select group(s) and their limits
 		$c = new Criteria();
 		$c->
 			clearSelectColumns()->
 			addSelectColumn(DownloadGroupPeer::ID)->
 			addSelectColumn('SUM(' . DownloadLogPeer::BYTE_COUNT . ') AS bandwidth_usage')->
 			addSelectColumn(DownloadGroupPeer::BANDWIDTH_LIMIT)->
-			addJoin(DownloadLogPeer::DOWNLOAD_FILE_ID, FileGroupPeer::DOWNLOAD_FILE_ID)->
-			addJoin(FileGroupPeer::DOWNLOAD_GROUP_ID, DownloadGroupPeer::ID)->
-			add(DownloadLogPeer::DOWNLOAD_FILE_ID, $this->getId())->
+			addJoin(DownloadGroupPeer::ID, FileGroupPeer::DOWNLOAD_GROUP_ID, Criteria::INNER_JOIN)->
+			addJoin(FileGroupPeer::DOWNLOAD_FILE_ID, DownloadLogPeer::DOWNLOAD_FILE_ID, Criteria::LEFT_JOIN)->
+			add(FileGroupPeer::DOWNLOAD_FILE_ID, $this->getId())->
 			add(DownloadGroupPeer::BANDWIDTH_LIMIT, null, Criteria::ISNOTNULL)->
 			addGroupByColumn(DownloadGroupPeer::ID)->
 			addGroupByColumn(DownloadGroupPeer::BANDWIDTH_LIMIT);
-		$stmt = DownloadFilePeer::doSelectStmt($c);
+
+		// If we have to consider resets, we have to break SUM statements down by group,
+		// since different time criteria are required for each block
+		if ($hasResets)
+		{
+			// One statement per group
+			$rows = $this->getSeperateGroupResults($c, $groups);
+		}
+		else
+		{
+			// Just use the predefined Criteria across all groups (one statement)
+			$stmt = DownloadFilePeer::doSelectStmt($c);
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
 		
 		$isPermit = true;
-		while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) && $isPermit)
+		while (($row = next($rows)) && $isPermit)
 		{
 			$isPermit = ($row['bandwidth_usage'] < $row['bandwidth_limit']);
 
@@ -114,6 +132,72 @@ class DownloadFile extends BaseDownloadFile
 	}
 
 	/**
+	 * Returns true if at least one of the supplied groups have reset settings
+	 * 
+	 * @param array $groups
+	 * @return boolean
+	 */
+	protected function groupsContainReset(array $groups)
+	{
+		$hasResets = false;
+
+		foreach ($groups as $group)
+		{
+			if ($group->getResetFrequency())
+			{
+				$hasResets = true;
+				break;
+			}
+		}
+
+		return $hasResets;
+	}
+
+	protected function getSeperateGroupResults(Criteria $criteria, array $groups)
+	{
+		$rows = array();
+		foreach ($groups as $group)
+		{
+			// Clone the predefined criteria
+			/* @var $c2 Criteria */
+			$extraC = clone $criteria;
+
+			// Note that we are working on a per-group basis
+			$extraC->add(DownloadGroupPeer::ID, $group->getId());
+
+			// Set time limits on logs if they apply
+			if ($frequency = $group->getResetFrequency())
+			{
+				list($timeStart, $timeEnd) = BandwidthUtils::getTimestampRange($frequency);
+				if ($offset = $group->getResetOffset())
+				{
+					$timeStart += $offset;
+					$timeEnd += $offset;
+				}
+
+				// LAST_ACCESSED_AT includes a few more logs than STARTED_AT, to be cautious
+				$cTime = $extraC->getNewCriterion(
+					DownloadLogPeer::LAST_ACCESSED_AT, $timeStart, Criteria::GREATER_EQUAL
+				);
+				$cTime->addAnd(
+					$extraC->getNewCriterion(
+						DownloadLogPeer::LAST_ACCESSED_AT, $timeEnd, Criteria::LESS_EQUAL
+					)
+				);
+				$extraC->add($cTime);
+			}
+
+			$stmt = DownloadFilePeer::doSelectStmt($extraC);
+			if ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+			{
+				$rows[] = $row;
+			}
+		}
+
+		return $rows;
+	}
+
+	/**
 	 * Lists the count usage for each group against the limit, and returns false if a limit is exceeded
 	 * 
 	 * Strategy same as isWithinGroupBandwidthLimits. Note that this query includes downloads that
@@ -124,22 +208,39 @@ class DownloadFile extends BaseDownloadFile
 	 */
 	public function isWithinGroupCountLimits()
 	{
+		// See if we have any reset limits to respect
+		$groups = $this->getGroups();
+		$hasResets = $this->groupsContainReset($groups);
+
+		// Standard criteria to run over these logs
 		$c = new Criteria();
 		$c->
 			clearSelectColumns()->
 			addSelectColumn(DownloadGroupPeer::ID)->
 			addSelectColumn('COUNT(*) AS count_usage')->
 			addSelectColumn(DownloadGroupPeer::COUNT_LIMIT)->
-			addJoin(DownloadLogPeer::DOWNLOAD_FILE_ID, FileGroupPeer::DOWNLOAD_FILE_ID)->
-			addJoin(FileGroupPeer::DOWNLOAD_GROUP_ID, DownloadGroupPeer::ID)->
-			add(DownloadLogPeer::DOWNLOAD_FILE_ID, $this->getId())->
+			addJoin(DownloadGroupPeer::ID, FileGroupPeer::DOWNLOAD_GROUP_ID, Criteria::INNER_JOIN)->
+			addJoin(FileGroupPeer::DOWNLOAD_FILE_ID, DownloadLogPeer::DOWNLOAD_FILE_ID, Criteria::LEFT_JOIN)->
+			add(FileGroupPeer::DOWNLOAD_FILE_ID, $this->getId())->
 			add(DownloadGroupPeer::COUNT_LIMIT, null, Criteria::ISNOTNULL)->
 			addGroupByColumn(DownloadGroupPeer::ID)->
 			addGroupByColumn(DownloadGroupPeer::COUNT_LIMIT);
-		$stmt = DownloadGroupPeer::doSelectStmt($c);
+		
+		// If we have to consider resets, we have to break COUNT statements down by group,
+		// since different time criteria are required for each block
+		if ($hasResets)
+		{
+			// One statement per group
+			$rows = $this->getSeperateGroupResults($c, $groups);
+		}
+		else
+		{
+			$stmt = DownloadFilePeer::doSelectStmt($c);
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
 
 		$isPermit = true;
-		while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) && $isPermit)
+		while (($row = next($rows)) && $isPermit)
 		{
 			$isPermit = ($row['count_usage'] < $row['count_limit']);
 
