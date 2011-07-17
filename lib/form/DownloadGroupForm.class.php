@@ -48,32 +48,6 @@ class DownloadGroupForm extends BaseDownloadGroupForm
 		);
 	}
 
-	/**
-	 * This is no longer in use
-	 */
-	protected function configureTimeWidgetsOld()
-	{
-		// New widget to choose duration of time reset (if any)
-		$resetMenu = array(
-			0 => 'None',
-			60 * 60 => 'Hourly',
-			60 * 60 * 24 => 'Daily',
-			60 * 60 * 24 * 7 => 'Weekly',
-		);
-		$this->widgetSchema['reset_chooser'] = new sfWidgetFormSelect(
-			array(
-				'choices' => $resetMenu,
-			)
-		);
-
-		// Permitted values for select widget
-		$this->validatorSchema['reset_chooser'] = new sfValidatorChoice(
-			array(
-				'choices' => array_keys( $resetMenu ),
-			)
-		);
-	}
-
 	protected function timeInput($name, $timestamp)
 	{
 		$elements = array('weeks', 'days', 'hours', 'minutes', 'seconds');
@@ -88,9 +62,10 @@ class DownloadGroupForm extends BaseDownloadGroupForm
 			);
 			
 			// @todo This doesn't work to preserve the values of the forms in case of error
+			$dbValue = isset($values[$element]) ? $values[$element] : '';
 			$this->setDefault(
 				$elementName,
-				$_POST ? $_POST['download_group'][$name][$element] : $values[$element]
+				$_POST ? $_POST['download_group'][$name][$element] : $dbValue
 			);
 		}
 
