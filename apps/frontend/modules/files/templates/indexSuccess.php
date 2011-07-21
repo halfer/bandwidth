@@ -8,6 +8,7 @@
   <thead>
     <tr>
       <th>Name</th>
+	  <th>Download link</th>
       <th>Path</th>
       <th>Original URI</th>
       <th>Created at</th>
@@ -23,6 +24,9 @@
 		  <a href="<?php echo url_for('files/edit?id='.$DownloadFile->getId()) ?>">
 			  <?php echo $DownloadFile->getName() ?>
 		  </a>
+	  </td>
+	  <td>
+		<?php echo link_to('Download', '@download?filename=' . $DownloadFile->getName()) ?>
 	  </td>
       <td><?php echo $DownloadFile->getPath() ?></td>
       <td><?php echo $DownloadFile->getOriginalUri() ?></td>
