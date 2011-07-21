@@ -42,5 +42,5 @@
 <?php echo pager_navigation($pager, '@groups') ?>
 
 <p>
-	<a href="<?php echo url_for('groups/new') ?>">New</a>
+	<a href="<?php echo url_for('@groups_new') ?>">New</a>
 </p>

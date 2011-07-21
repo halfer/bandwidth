@@ -26,6 +26,10 @@ groups_get_freq:
   url:    /settings/groups/get-freq
   param:  { module: groups, action: getFrequency }
 
+groups_new:
+  url:    /settings/groups/new
+  param:  { module: groups, action: new }
+
 files:
   url:    /settings/files
   param:  { module: files, action: index }
@@ -33,6 +37,10 @@ files:
 files_edit:
   url:    /settings/files/edit/*
   param:  { module: files, action: edit }
+
+files_new:
+  url:    /settings/files/new
+  param:  { module: files, action: new }
 
 file:
   url:    /settings/file/:fileId

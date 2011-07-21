@@ -42,5 +42,5 @@
 <?php echo pager_navigation($pager, '@files') ?>
 
 <p>
-	<a href="<?php echo url_for('files/new') ?>">New</a>
+	<a href="<?php echo url_for('@files_new') ?>">New</a>
 </p>
